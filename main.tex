@@ -1,0 +1,176 @@
+\documentclass[11pt, oneside]{article}   	% use "amsart" instead of "article" for AMSLaTeX format
+\usepackage{geometry}
+\usepackage[]{algorithm2e}
+\geometry{letterpaper}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsthm,enumerate}
+\usepackage{amsmath}
+\usepackage{parskip}
+
+\graphicspath{ {images/} }
+
+\newtheorem*{theorem}{Theorem}
+\newtheorem*{lemma}{Lemma}
+%SetFonts
+
+\title{CS340 - Problem Set 4}
+\author{Caroline Shen}
+\date{}							% Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+\section{Problem 4.9}
+\begin{enumerate}[(a)]
+    \item Is every minimum-bottleneck tree of $G$ a minimum spanning tree of $G$?
+    
+    No, there will be some minimum-bottleneck tree that is not a minimum spanning tree. Consider the graph with vertices $V = \{a,b,c,d\}$ and edges and weights $V=\{(a,b) = 1, (a,c) = 20, (a,d) = 1, (b,d)=4\}$. In this case, the minimum spanning tree would consists of edges $\{(a,b),(a,c),(a,d)\}$. But a minimum-bottleneck tree could be $(a,b),(a,c),(b,d)$ and it is not a minimum spanning tree since the weight of these 3 edges are larger than that of MST.
+    
+    \item Is every minimum spanning tree of G a minimum-bottleneck tree of $G$?
+    
+    Yes, every minimum spanning tree of $G$ is a minimum-bottleneck tree of $G$.
+    \begin{proof}
+    Let $T$ be an MST that is not an $MBT$ and $T'$ be an $MBT$ of the graph $G$. Let $e$ be the bottleneck edge of the MST $T$. Thus, by definition of minimum-bottleneck tree, every edge in $T'$ is cheaper than $e$. 
+    
+    Since $e$ does not belong to $T'$, adding $e$ to $T'$ will cause a cycle by the construction of the Pseudocode. Since $e$ is the most expensive edge in the cycle, then $e$ cannot appear in any $MST$ according to theorem 4.20 in the book. This is a contradiction to the fact that $T$ is a minimum spanning tree.
+    
+    Therefore every $MST$ is an $MBT$.
+    \end{proof}
+\end{enumerate}
+
+\section{Problem 2}
+(a) Present a (short) counterexample to show that stacking the boxes in increasing order of weight $w_i$ is not optimal.
+
+Consider 2 boxes $b_1, b_2$ where $w_1 = 500$, $w_2 = 499$ and $p_1 = 0.99, p_2 = 0.01$. Since $w_1>w_2$, we put $b_2$ on top of $b_1$ by the algorithm. Then the total cost of this arrangement is $0.01\cdot 499 + 0.99 \cdot 999 = 994$. But if we put $b_1$ on top of $b_2$, the total cost would be $0.99 \cdot 500 + 0.01 \cdot 999 = 504.99$. In this case, arranging boxes in increasing order of weight is not optimal.
+
+(b) Present a (short) counterexample to show that stacking the boxes in decreasing order of
+access probability $p_i$ is not optimal.
+
+Consider 2 boxes $b_1, b_2$, with $w_1 = 1000, w_2 = 10$ and $p_1 = 0.51, p_2 = 0.49$. By stacking the boxes in decreasing order of probability, we put $b_1$ on top of $b_2$. Then the total cost of this arrangement is $0.51 \cdot 1000 + 0.49 \cdot 1100 = 1049$. But if we stack $b_2$ on top of $b_1$, the total cost would be $0.49 \cdot 10 + 0.51 \cdot 1100 = 565.9$. Therefore, stacking the boxes in decreasing order of
+access probability is not optimal.
+\subsection{Description}
+Notice that we want the boxes on top to be lighter and has larger possibility to be chosen. Let the set of $n$ boxes $B = \{b_1,b_2,...,b_n\}$, the weights of them be $W = \{w_1,w_2,...,w_n\}$ and the probabilities be $P = \{p_1,p_2,...,p_n\}$. Then just compute $\frac{w_i}{p_i}$ for each $b_i \in B$. Put the largest values at bottom and smaller values on the top. Then the arrangement is optimal and the time complexity of this algorithm is $O(n\log n)$, the time complexity for extract max from priority queue.
+
+\subsection{Pseudocode}
+\begin{algorithm}
+\SetKwFunction{sb}{stackBoxes}
+\SetKwProg{Fn}{Function}{}{}
+\Fn{\sb{W,P,B}}{
+
+\For{i $\in$ 1 to n}{
+ ratio[$b_i$] = $w_i/p_i$
+ 
+ push ratio into priority queue $Q$
+}
+
+\For{i from 1 to n}{
+$b$ = getMax $Q$
+
+push $b$ to stack $S$
+}
+\Return{$S$}
+}
+\end{algorithm}
+\subsection{Time Analysis}
+Both for loops run for $n$ times. Get the maximum element in t a priority queue is $O(\log n)$. Since the second loop is running for $n$ times, the total time complexity is $O(n\log n)$. The first loop is building a priority queue where $b[i]$ is the key. Therefore, the building of the entire queue is of complexity $O(n)$. Therefore the complexity of the entire algorithm is $O(n)+O(n\log n) = O(n\log n)$ with the complexity of pushing elements to a stack is $O(1)$.
+
+\subsection{Proof of Correctness}
+Proof of Termination:
+
+By time analysis, both loops will run $n$ times so the algorithm will terminate since $n < \infty$.
+
+Proof of Lowest Cost:
+\begin{proof}
+
+We will show that ranking according to the ratio of weight over probability is optimal by induction.
+
+Base case is when there is only 1 box. Then there is only one box $b_1$ in the stack and so the cost is just $w_ip_i$ which is optimal.
+
+Then suppose when there are $n-1$ boxes, the stack of boxes that are ranking according to the ratio $\frac{w_i}{p_i}$ is optimal, that is, with minimum cost. Then we have to show tat it is also true for $n$ boxes.
+
+Consider we have boxes $b_1,b_2,...,b_n$. Then we can arrange the boxes $b_1$ up to $b_n{n-1}$ optimally by the rank of the weight-probability ratio by induction hypothesis. Now try to add box $b_n$. Compare the ratio $\frac{w_n}{p_n}$ with all other ratios until we have some $i \in [1,n-1]$ such that $\frac{w_i}{p_i}<\frac{w_n}{p_n}<\frac{w_{i+1}}{p_{i+1}}$. Then we insert $b_n$ in the position between $i$ and $i+1$. Notice that by the inequality above we have
+$$w_i\cdot p_n < w_n\cdot p_i, \text{ and } w_n\cdot p_{i+1} < w_{i+1}\cdot p_n.$$
+
+This also implies that $w_k\cdot p_n < w_n\cdot p_k$ for all $k\leq i$ and $w_n\cdot p_{i+1} < w_{i+1}\cdot p_n$ for all $k \geq i+1$ since the ratio is sorted.
+
+By adding the new box $b_n$, we are adding some additional costs to the original stack. The costs of boxes above $b_n$ is unchanged since removing them has nothing to do with $b_n$. For $b_n$ itself, the additional cost is $p_n\cdot (w_n + \sum_{k = 1}^i w_k)$. For every box $b_k$ under $b_n$, the original cost is $p_k \cdot \sum_{x = 1}^k w_x$. After adding $b_n$, the cost becomes $p_k\cdot (w_n + \sum_{x = 1}^k w_x)$. Therefore the costs increases by $p_k\cdot w_n$ for every $b_k$ below $b_n$. Then the total increase of cost of the boxes below $b_n$ is $(w_n \cdot \sum_{k = i+1}^{n-1}p_k)$. In total the amount of cost added to the stack is $$p_n\cdot w_n + \sum_{k = 1}^i w_k \cdot p_n + \sum_{k = i+1}^{n-1}w_n \cdot p_k.$$
+
+We claim that no matter $b_n$ is placed higher than this place or lower than this place, the cost will only increase. Then our proof is done.
+
+If $b_n$ is placed at some point $r<i$, then the total increased cost would be 
+$$p_n \cdot w_n + \sum_{k = 1}^r w_k \cdot p_n + \sum_{k = r+1}^{n-1}w_n \cdot p_k$$ which is the same as
+$$(p_n\cdot w_n + \sum_{k = 1}^i w_k \cdot p_n + \sum_{k = i+1}^{n-1}w_n \cdot p_k) + (\sum_{k = r+1}^i w_n \cdot p_k - \sum_{k = r+1}^i w_k \cdot p_n).$$
+
+Since $r<i$, by the inequalities above, we have $(\sum_{k = r+1}^i w_n \cdot p_k > \sum_{k = r+1}^i w_k \cdot p_n)$ and therefore the new cost at $r$ is greater than the cost between $i$ and $i+1$.
+
+If $b_n$ is placed at some point $r>i+1$, then the total increased cost would be $$p_n \cdot w_n + \sum_{k = 1}^r w_k \cdot p_n + \sum_{k = r+1}^{n-1}w_n \cdot p_k$$ which is the same as $$(p_n\cdot w_n + \sum_{k = 1}^i w_k \cdot p_n + \sum_{k = i+1}^{n-1}w_n \cdot p_k) + (\sum_{k = i+1}^r w_k \cdot p_n - \sum_{k = i+1}^r w_n \cdot p_k).$$
+Since $r>i+1$, by the inequalities above, we have $\sum_{k = i+1}^r w_k \cdot p_n > \sum_{k = i+1}^r w_n \cdot p_k$ and therefore the new cost at $r$ is greater than the cost between $i$ and $i+1$.
+
+Therefore, we have shown by induction that stacking the boxes by the ratio between weight and probability is optimal.
+\end{proof}
+\section{Problem 3}
+\subsection{Description}
+Set the horizontal line as degree 0, and let the degree increases counter-clockwise. Then represent each circle by the degree at which the ray first hit that circle and the degree at which the ray leaves the circle. Then each circle is represented by a tuple $(s,t)$. Then sort the circles by starting points. At first the number of rays is 0. Starting from the first circle $c_1$, check if the next circle $c_2$ has an overlap with $c_1$. If yes, store the tuple $(s_{c_2}, \min(t_{c1},t_{c2}))$. Then look for $c_3$ and check if $c_3$ has overlap with the tuple above, etc. If the starting point is greater than the ending degree, then number of rays increase by 1. Otherwise, start fresh for a new ray. Repeat this until the end of the list and find the number of rays needed when starting from $c_1$. Then repeat the entire process for each circle to find the least number of rays.
+\newpage
+\subsection{Pseudocode}
+Let the list of all circles be $C$ and the number of circles be $n$.
+\begin{algorithm}
+\SetKwFunction{mnr}{minimumNumOfRays}
+\SetKwProg{Fn}{Function}{}{}
+\Fn{\mnr{C}}{
+sort $C$ by starting degree
+
+numOfRays = $\infty$
+
+ \For{i in 0 to n-1}{
+   rays = 0
+   
+   j = i+1
+   
+   interval = $C[i]$
+   
+  \While{$j \mod n \neq i$}{
+   \If{$C[j][s] <= interval[t]$}{
+    interval = ($C[j][s]$, min(interval[t],$C[j][t]$)
+    
+    j++
+   } \Else {
+    rays++
+    
+    interval = $C[j]$
+    
+    j++
+   }
+  }
+  rays++
+  
+  \If{rays $<$ numOfRays}{
+   numOfRays = rays
+  }
+ }
+ \Return{numOfRays}
+}
+\end{algorithm}
+\subsection{Time Analysis}
+There is a nested for loop and both for loops runs for $n$ times. Therefore, the entire loop runs for $n^2$ times. Sort all circles by starting degree takes $O(n\log n)$. Therefore, the entire algorithm has a complexity of $O(n^2)+ O(n\log n)$ = $O(n^2)$. This is true since each operation inside the loop clearly has complexity $O(1)$.
+\subsubsection{Data Structure}
+All circles are stored in an array which allows the access of element be $O(1)$. Also, given the coordinate each circle, it takes $O(1)$ to compute its starting degree and ending degree by trigonometry. Therefore, creating the array of starting and ending degrees of all $n$ circles is of $O(n)$.
+
+\subsection{Proof of Correctness}
+\begin{proof}
+By the time analysis, the nested loop would run $n^2$ times so it will terminate eventually.
+
+Now we show that the number of rays from the algorithm is actually the optimum number.
+
+Suppose by contradiction that there is an optimal number $k'$ that is different from the output number $k$, then $k'<k$ or $k'>k$.
+
+If $k'>k$. Then in the algorithm, there must be one circle that the algorithm haven't been visited by any ray since the optimal answer has more rays than the output. But this cannot happen since the while loop checks every circle in the array. When there is an idle circle, there must be a ray go through it. Therefore, this is a contradiction to the fact that the loop checks every circle in the array.
+
+If $k'<k$. Consider the optimal arrangement where there are only $k'$ rays. Take an arbitrary ray in the optimal arrangement and let $c$ be the circle with the least starting degree within all circles intersect that ray. Take $c$ be the starting point of the algorithm, then for every ray in the algorithm, there must be higher or equal number of circles intersect that ray. Since the total number of circles is the same, the algorithm cannot produce more rays than the optimal; since a ray in the algorithm will take as many circles as possible.
+
+Therefore $k'$ must equal to $k$.
+\end{proof}
+
+\section{Collaboration}
+Sunny Qi
+\end{document}
