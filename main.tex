@@ -21,6 +21,7 @@
 \begin{document}
 \maketitle
 
+
 \section{Algorithm Description}
 For every two classes, we find the number of students that cannot attend both. Then sort them in decreasing order. 
 
@@ -41,5 +42,6 @@ Since we are prioritizing popular classes that students want to take at the same
 In the mean time, we are taking the classroom and professor's availability into consideration. There would not be any 2 classes which are in the same time slot having the same teacher. Also, the class size won't exceed the capacity of the classrooms since we are assigning smaller rooms first. If there are an unavoidable conflict, we will sacrifice the smallest number of students that are involved in this conflict.
 
 However, we are not sure how optimal this algorithm will be. Potential improvement could be made if we can come up with a better solution. Since we are not sure about how much smaller the number of classes is, compared to the number of students, the algorithm will be inefficient if $m^2$ is actually greater than $n \log n$.
+
 
 \end{document}
