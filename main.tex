@@ -28,6 +28,62 @@ Pick the first one from the list and find the corresponding two classes. For eac
 
 Repeat the process for each one in the list. The final schedule should be the optimal schedule.
 
+\section{}
+\begin{algorithm}[H]
+\SetKwFunction{foo}{foo}
+\SetKwProg{Fn}{Scheduling}{(C, S, P, T, R)}{}
+\Fn{\Scheduling{}}{
+    Schedule[][]
+    
+    Position = []
+    
+    Calculate popularity of each class.
+    
+    Sort all classes by popularity. 
+    
+    \For{each class c $\in$ C}{
+        Find out the smallest room it can fit with an empty time slot, r.
+        
+        \For{each time t in T}{
+            %optional, need further discussion
+            
+            check all Schedule[t][$r-i$] ($0<i < r$)
+        
+            Find empty Schedule[t][r] without professor conflict= c
+            
+            Position[c] = (t,r)
+        }
+        
+    }
+    return schedule[][], Position
+    
+}
+\end{algorithm}
+
+\begin{algorithm}[H]
+\SetKwFunction{foo}{foo}
+\SetKwProg{Fn}{test}{(S, Pref, Schedule, Position)}{}
+\Fn{\test{}}{
+    count = 0
+
+    \For{each student s in S}{
+        final pick = [0]$\times len(Schedule)$
+
+        \For{each class c in Pref[s]}{
+
+            t = Position[c][0]      
+            
+            \If{final pick[t] is empty}{
+                 final pick[t] = c
+                 
+                 count += 1 
+            }
+        }
+    }
+    return $count/(len(Pref[0])\times len(S))$
+}
+
+\end{algorithm}
 \section{Time Analysis}
 Let $n$ be the number of students times the number of classes they can take. Let $m$ be the total number of classes. Let $p$ be the number of classrooms. Let $t$ be the number of time slots. Notice that $m$, $p$ and $t$ are strictly smaller than $n$.
 
