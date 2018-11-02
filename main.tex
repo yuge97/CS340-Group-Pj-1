@@ -100,12 +100,12 @@ Calculating the popularity of each class takes $O(n\times l)$. Sorting all class
 Based on out time analysis, the runtime is roughly linear to $mtr$.
 
 \subsection{Solution Quality Analysis}
-For basic data, we can satisfy around 70\% to 75\% student preference. For haverford data, we are satisfying around \%80 student preference. However, we are not considering time slot overlapping. In other words, for two time slots one from 1 to 4 pm on Monday, and the other one from 1 to 2 pm on Monday, we are considering them as non overlapping slots. Thus the actual quality of haverford data should be worse 80\%.
+For basic data, we can satisfy around 70\% to 75\% student preference. For haverford data, we are satisfying around \%80 student preference. However, the actual satisfication should be less, since we are not considering time slot overlapping. In other words, for two time slots one from 1 to 4 pm on Monday, and the other one from 1 to 2 pm on Monday, we are considering them as non overlapping slots. Thus the actual quality of haverford data should be worse 80\%.
 
 \section{Discussion}
 This time for the basic case we prioritizing popular classes that students want to take at the same time, and set the first valid room that can fit students and then put it in a time slot. If we can't find such a valid room, we will then put the certain class into the first classroom with capacity smaller than the class size. In this way there must be some students cannot take the class they want to take, but we maximize the classes that each students want to take.
 
-In the mean time, we are taking the classroom and professor's availability into consideration. There will not be any 2 classes which are in the same time slot having the same teacher. Also, the class size won't exceed the capacity of the classrooms. If there are an unavoidable conflict, we will sacrifice the smallest number of students that are involved in this conflict.
+In the mean time, we are taking the classroom and professor's availability into consideration. We try to avoid the situation where 2 classes in the same time slot are taught by the same professor. Also, the class size won't exceed the capacity of the classrooms. If there are an unavoidable conflict, we will sacrifice the smallest number of students that are involved in this conflict.
 
 However, in this way, when we are computing the optimality, the optimality should be affected since we might brutally put some classes into a classroom that cannot hold the number of students that want to take that class. Yet when we were computing the optimality we didn't concern about that. Also, there might be rooms or time slots that can better fit the certain class than the way we use to set.
 
