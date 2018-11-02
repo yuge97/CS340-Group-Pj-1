@@ -93,7 +93,7 @@ Let \textbf{r} be the number of rooms.
 Let \textbf{t} be the number of time slots. 
 Notice that $p$ and $t$ are strictly smaller than $n$.
 
-Calculating the popularity of each class takes $O(n\times l)$. Sorting all classes takes $O(mlogm)$. The first for loop in Scheduling() runs \textbf{m} iterations. Finding out the smallest room each class can fit takes $O(1)$. The inner for loop runs \textbf{t} iterations. Checking all schedules runs $t \times r$ times, totally. So the algorithm runs in $O(n)$.
+Calculating the popularity of each class takes $O(n\times l)$. Sorting all classes takes $O(mlogm)$. The first for loop in Scheduling() runs \textbf{m} iterations. Finding out the smallest room each class can fit takes $O(1)$. The inner for loop runs \textbf{t} iterations. Checking all schedules runs $t \times r$ times, totally. So the algorithm runs in $O(mtr)$.
 
 
 \section{Discussion}
