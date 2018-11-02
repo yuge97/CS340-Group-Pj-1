@@ -86,11 +86,15 @@ Repeat the process for each one in the list. The final schedule should be the op
 
 \end{algorithm}
 \section{Time Analysis}
-Let $n$ be the number of students times the number of classes they can take. Let $m$ be the total number of classes. Let $p$ be the number of classrooms. Let $t$ be the number of time slots. Notice that $m$, $p$ and $t$ are strictly smaller than $n$.
+Let \textbf{n} be the number of students. 
+Let \textbf{l} be the average length of each student's preference list.
+Let \textbf{m} be the total number of classes. 
+Let \textbf{r} be the number of rooms. 
+Let \textbf{t} be the number of time slots. 
+Notice that $p$ and $t$ are strictly smaller than $n$.
 
-Getting the conflicts of each pair of classes takes $O(n)$ and sort this list takes $O(n\log n)$. Sort the sizes of the room takes $O(p \log p)$. The outside for loop will run at most $m \choose 2$ times, which is $O(m^2)$. Finding the smallest room that a class can fill takes $O(p)$ for a sorted list. For each available time slot of that room, comparing with all the other classes in the same time slot takes $O(pt)$. Since all pairs of classes and their number of conflicts are stored in a dictionary where the keys are the class pairs and values are the number of conflicts, checking the student conflicts takes $O(1)$.
+Calculating the popularity of each class takes $O(n\times l)$. Sorting all classes takes $O(mlogm)$. The first for loop in Scheduling() runs \textbf{m} iterations. Finding out the smallest room each class can fit takes $O(1)$. The inner for loop runs \textbf{t} iterations. Checking all schedules runs $t \times r$ times, totally. So the algorithm runs in $O(n)$.
 
-Therefore, the entire algorithm runs at complexity $O(n \log n)+O(m^2pt)$. If $p$ and $t$ are too small to affect the total time complexity, then the complexity is equivalent to $O(n \log n)+O(m^2)$.
 
 \section{Discussion}
 Since we are prioritizing popular classes that students want to take at the same time, and making these classes available to as many students as possible, we think this would be a great approach to this problem.
