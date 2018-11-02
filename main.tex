@@ -23,11 +23,11 @@
 
 
 \section{Algorithm Description}
-For every two classes, we find the number of students that cannot attend both. Then sort them in decreasing order. 
+We schedule all classes using the popularity of each class as main criteria. First we traverse over the student preference list and find out the number of student who want to attend each class and sort the classes from the most popular to the least popular. 
 
-Pick the first one from the list and find the corresponding two classes. For each of them, if the class is not assigned, pick the smallest room that it can fit. For each available time slot of that room, compare with all the other classes in the same time slot. If there exist a class that is taught by the same professor or there are students that want to take both classes, change to the next available time slot. If all time slots are taken, then change to the next smallest room and put it in an available time slot. If all time slots are not available, put it in a time slot where there are least number of students that want to take all classes in that time slot. Mark this class as assigned. 
+Then we sort all rooms by their sizes from small to large. Starting from the most popular class, try to assign the class to the smallest classroom $c$ it can fit in. For each time slots $t$ for $c$, check this course with all courses in the same time slot. If it is not taught by the same professor as any course in the same time, assign the class to this time. If there is no such empty time slot in this room, move to the next largest room and repeatedly checking for such a time slot. 
 
-Repeat the process for each one in the list. The final schedule should be the optimal schedule.
+If such a time slot doesn't exist in all rooms that can fit that class. We move to rooms that have capacity less than the number of people registered and find a time slot without conflict and squeeze the class into that room. 
 
 \section{}
 \begin{algorithm}[H]
