@@ -29,7 +29,7 @@ Then we sort all rooms by their sizes from small to large. Starting from the mos
 
 If such a time slot doesn't exist in all rooms that can fit that class. We move to rooms that have capacity less than the number of people registered and find a time slot without conflict and squeeze the class into that room. There has to be such a room since the product of the number of time slot and the number of rooms must be greater than the number of total classes by the way we setup the data. If there are more classes than the product, we just don't assign the rest of the classes.
 
-\section{}
+\section{Pseudo-code}
 \begin{algorithm}[H]
 \SetKwFunction{foo}{foo}
 \SetKwProg{Fn}{Scheduling}{(C, S, P, T, R)}{}
@@ -97,10 +97,10 @@ Calculating the popularity of each class takes $O(n\times l)$. Sorting all class
 
 \section{Experimental Analysis}
 \subsection{Time Analysis}
-Based on out time analysis, the runtime is roughly linear to $mtr$.
+Based on out time analysis, the runtime is roughly linear to $mtr$. For $mrt$ as small as a few hundreds, the program runs within 0.001 seconds. For $mrt$ around 30000, the program runs around 0.01 seconds. For $mrt$ as large as 2 millions, the program runs around 0.4 second. Roughly speaking, the runtime of the algorithm is proportional to $mtr$. 
 
 \subsection{Solution Quality Analysis}
-For basic data, we can satisfy around 70\% to 75\% student preference. For haverford data, we are satisfying around \%80 student preference. However, the actual satisfication should be less, since we are not considering time slot overlapping. In other words, for two time slots one from 1 to 4 pm on Monday, and the other one from 1 to 2 pm on Monday, we are considering them as non overlapping slots. Thus the actual quality of haverford data should be worse 80\%.
+For basic data, we can satisfy around 70\% to 75\% student preference. For haverford data, we are satisfying around \%80 student preference. However, the actual satisfaction should be less, since we are not considering time slot overlapping. In other words, for two time slots one from 1 to 4 pm on Monday, and the other one from 1 to 2 pm on Monday, we are considering them as non overlapping slots. Thus the actual quality of haverford data should be worse than 80\%.
 
 \section{Discussion}
 This time for the basic case we prioritizing popular classes that students want to take at the same time, and set the first valid room that can fit students and then put it in a time slot. If we can't find such a valid room, we will then put the certain class into the first classroom with capacity smaller than the class size. In this way there must be some students cannot take the class they want to take, but we maximize the classes that each students want to take.
