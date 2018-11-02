@@ -95,6 +95,12 @@ Notice that $p$ and $t$ are strictly smaller than $n$.
 
 Calculating the popularity of each class takes $O(n\times l)$. Sorting all classes takes $O(mlogm)$. The first for loop in Scheduling() runs \textbf{m} iterations. Finding out the smallest room each class can fit takes $O(1)$. The inner for loop runs \textbf{t} iterations. Checking all schedules runs $t \times r$ times, totally. So the algorithm runs in $O(mtr)$.
 
+\section{Experimental Analysis}
+\subsection{Time Analysis}
+Based on out time analysis, the runtime is roughly linear to $mtr$.
+
+\subsection{Solution Quality Analysis}
+For basic data, we can satisfy around 70\% to 75\% student preference. For haverford data, we are satisfying around \%80 student preference. However, we are not considering time slot overlapping. In other words, for two time slots one from 1 to 4 pm on Monday, and the other one from 1 to 2 pm on Monday, we are considering them as non overlapping slots. Thus the actual quality of haverford data should be worse 80\%.
 
 \section{Discussion}
 Since we are prioritizing popular classes that students want to take at the same time, and making these classes available to as many students as possible, we think this would be a great approach to this problem.
