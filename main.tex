@@ -27,7 +27,7 @@ We schedule all classes using the popularity of each class as main criteria. Fir
 
 Then we sort all rooms by their sizes from small to large. Starting from the most popular class, try to assign the class to the smallest classroom $c$ it can fit in. For each time slots $t$ for $c$, check this course with all courses in the same time slot. If it is not taught by the same professor as any course in the same time, assign the class to this time. If there is no such empty time slot in this room, move to the next largest room and repeatedly checking for such a time slot. 
 
-If such a time slot doesn't exist in all rooms that can fit that class. We move to rooms that have capacity less than the number of people registered and find a time slot without conflict and squeeze the class into that room. 
+If such a time slot doesn't exist in all rooms that can fit that class. We move to rooms that have capacity less than the number of people registered and find a time slot without conflict and squeeze the class into that room. There has to be such a room since the product of the number of time slot and the number of rooms must be greater than the number of total classes by the way we setup the data. If there are more classes than the product, we just don't assign the rest of the classes.
 
 \section{}
 \begin{algorithm}[H]
