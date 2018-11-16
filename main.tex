@@ -14,96 +14,151 @@
 \newtheorem*{lemma}{Lemma}
 %SetFonts
 
-\title{CS340 - Group Project 1}
+\title{CS340 - Group Project}
 \author{Caroline Shen, Rose Lin, Sunny Qi}
 \date{}							% Activate to display a given date or no date
 
 \begin{document}
 \maketitle
+\section{Abstract}
 
 
+\newpage
 \section{Algorithm Description}
 We schedule all classes using the popularity of each class as main criteria. First we traverse over the student preference list and find out the number of student who want to attend each class and sort the classes from the most popular to the least popular. 
 
 Then we sort all rooms by their sizes from small to large. Starting from the most popular class, try to assign the class to the smallest classroom $c$ it can fit in. For each time slots $t$ for $c$, check this course with all courses in the same time slot. If it is not taught by the same professor as any course in the same time, assign the class to this time. If there is no such empty time slot in this room, move to the next largest room and repeatedly checking for such a time slot. 
 
-If such a time slot doesn't exist in all rooms that can fit that class. We move to rooms that have capacity less than the number of people registered and find a time slot without conflict and squeeze the class into that room. There has to be such a room since the product of the number of time slot and the number of rooms must be greater than the number of total classes by the way we setup the data. If there are more classes than the product, we just don't assign the rest of the classes.
+If such a time slot doesn't exist in all rooms that can fit that class, we move to rooms that have capacity less than the number of people registered and find a time slot without conflict and squeeze the class into that room. There has to be such a room since the product of the number of time slot and the number of rooms must be greater than the number of total classes by the way we setup the data. If there are more classes than the product, we just don't assign the rest of the classes.
 
-\section{Pseudo-code}
+\section{Pseudocode}
 \begin{algorithm}[H]
 \SetKwFunction{foo}{foo}
-\SetKwProg{Fn}{Scheduling}{(C, S, P, T, R)}{}
-\Fn{\Scheduling{}}{
-    Schedule[][]
+\SetKwProg{Fn}{Scheduling}{}{}
+\Fn{\Scheduling{(Classes, Students, Professors, Times, Rooms, hc\_classes)}}{
+    Build a 2D array $Schedule[][]$
     
-    Position = []
+    Build a dictionary $Position$ keyed with class id
     
-    Calculate popularity of each class.
+    Build a dictionary $room\_dict$ keyed with class id and (time slot, room id) in the schedule as value
     
-    Sort all classes by popularity. 
+    Calculate popularity of each class
     
-    \For{each class c $\in$ C}{
-        Find out the smallest room it can fit with an empty time slot, r.
+    Sort all classes by popularity
+    
+    \For{each class c $\in$ Classes}{
+        Find out the smallest room it can fit with an empty time slot, $r$.
         
-        \For{each time t in T}{
+        \For{each time t in Times}{
             %optional, need further discussion
             
-            check all Schedule[t][$r-i$] ($0<i < r$)
+            Check all $Schedule[t][r-i] (0 < i < r)$
         
-            Find empty Schedule[t][r] without professor conflict= c
+            Find empty $Schedule[t][r]$ without professor conflict = $c$
             
-            Position[c] = (t,r)
+            $Position[c] = (t,r)$
         }
-        
     }
-    return schedule[][], Position
-    
+    return $Schedule, Position, room\_dict$
 }
 \end{algorithm}
 
 \begin{algorithm}[H]
 \SetKwFunction{foo}{foo}
-\SetKwProg{Fn}{test}{(S, Pref, Schedule, Position)}{}
-\Fn{\test{}}{
-    count = 0
+\SetKwProg{Fn}{Test}{}{}
+\Fn{\test{(S, Pref, Schedule, Position)}}{
+    $count = 0$
+    
+    $total = 0$
 
     \For{each student s in S}{
-        final pick = [0]$\times len(Schedule)$
+        $total +=$ len$(Pref[s])$
+    
+        final pick = [0]$\times$ len$(Schedule)$
 
         \For{each class c in Pref[s]}{
-
-            t = Position[c][0]      
+            \If{c in Position}{
+                $t = Position[c][0]$    
             
-            \If{final pick[t] is empty}{
-                 final pick[t] = c
+                \If{final pick[t] is empty}{
+                    final pick[$t$] = $c$
                  
-                 count += 1 
+                    $count += 1$
+                }
+            }
+            \Else{
+                $total -= 1$
             }
         }
     }
-    return $count/(len(Pref[0])\times len(S))$
+    return $count/total$
 }
-
 \end{algorithm}
+
 \section{Time Analysis}
 Let \textbf{n} be the number of students. 
 Let \textbf{l} be the average length of each student's preference list.
 Let \textbf{m} be the total number of classes. 
 Let \textbf{r} be the number of rooms. 
 Let \textbf{t} be the number of time slots. 
-Notice that $p$ and $t$ are strictly smaller than $n$.
+Notice that $r$ and $t$ are strictly smaller than $n$.
 
-Calculating the popularity of each class takes $O(n\times l)$. Sorting all classes takes $O(mlogm)$. The first for loop in Scheduling() runs \textbf{m} iterations. Finding out the smallest room each class can fit takes $O(1)$. The inner for loop runs \textbf{t} iterations. Checking all schedules runs $t \times r$ times, totally. So the algorithm runs in $O(mtr)$.
+Calculating the popularity of each class takes $O(n \times l)$. Sorting all classes takes $O(m\log m)$. The first for loop in Scheduling() runs \textbf{m} iterations. Finding out the smallest room each class can fit takes $O(1)$. The inner for loop runs \textbf{t} iterations. Checking all schedules runs $t \times r$ times, totally. So the algorithm runs in $O(mtr)$.
 
+\subsection{Data Structure}
+We need to build a 2D array $Schedule$ in the function scheduling, and we also need to build two dictionaries, one is $Position$, which is keyed with class id, another one is $room\_dict$, which is keyed with class id and use (time\_slot, room\_id) in the $Schedule$ as its value. 
+
+
+\section{Proof of Correctness}
+To prove that this algorithm works, two parts need to be shown.
+
+1. Proof of termination.
+
+2. Proof of validity.
+
+\textit{Proof of termination:}
+
+Build all variables only takes $O(1)$. Since the number of classes, students, professors, time slots, and rooms are all finite, calculating the popularity of each classes must terminate, and sorting all classes by popularity will terminate in the same reason. Then the outer for loop will terminate because the number of classes is finite. Find the smallest room and an empty time slot will also not run infinitely many times. The inner for loop will also terminate as times is not infinite. Then in the inner for loop, check all elements in $Schedule$ will terminate, so did find the empty schedule. Since both for loops and their inner part will terminate, the algorithm will then terminate. \\
+
+\textit{Proof of validity:}
+
+We'll prove by contradiction. Suppose that our algorithm cannot give a valid result, which means that there must be some classes not been put into the class schedule. However, since when we multiplying the number of rooms and time slots, we find out that the number of the multiplication is much bigger than the number of classes or number of professors, it is impossible for some class not being able to be put into the class schedule, which is a contradiction.
+
+Thus our algorithm will give a valid scheduling of all classes.
+
+
+\newpage
 \section{Experimental Analysis}
 \subsection{Time Analysis}
-Based on out time analysis, the runtime is roughly linear to $mtr$. For $mrt$ as small as a few hundreds, the program runs within 0.001 seconds. For $mrt$ around 30000, the program runs around 0.01 seconds. For $mrt$ as large as 2 millions, the program runs around 0.4 second. Roughly speaking, the runtime of the algorithm is proportional to $mtr$. 
+Based on out time analysis, the run time is roughly linear to $mtr$.
 
 \subsection{Solution Quality Analysis}
-For basic data, we can satisfy around 70\% to 75\% student preference. For haverford data, we are satisfying around 80\% student preference. However, the actual satisfaction should be less, since we are not considering time slot overlapping. In other words, for two time slots one from 1 to 4 pm on Monday, and the other one from 1 to 2 pm on Monday, we are considering them as non overlapping slots. Thus the actual quality of haverford data should be worse than 80\%.
+For basic data, we can satisfy around 70\% to 75\% student preference. For Haverford data, we can satisfy around 100\% student preference. % NEED TO CHECK
 
+
+% we are satisfying around \%80 student preference. However, we are not considering time slot overlapping. In other words, for two time slots one from 1 to 4 pm on Monday, and the other one from 1 to 2 pm on Monday, we are considering them as non overlapping slots. Thus the actual quality of Haverford data should be worse 80\%. Based on out time analysis, the runtime is roughly linear to $mtr$. For $mrt$ as small as a few hundreds, the program runs within 0.001 seconds. For $mrt$ around 30000, the program runs around 0.01 seconds. For $mrt$ as large as 2 millions, the program runs around 0.4 second. Roughly speaking, the runtime of the algorithm is proportional to $mtr$. 
+
+\subsection{Solution Quality Analysis}
+For basic data, we can satisfy around 70\% to 75\% student preference. For haverford data, we are satisfying around 100\% student preference. % Need to check
+% However, the actual satisfaction should be less, since we are not considering time slot overlapping. In other words, for two time slots one from 1 to 4 pm on Monday, and the other one from 1 to 2 pm on Monday, we are considering them as non overlapping slots. Thus the actual quality of haverford data should be worse than 80\%.
+
+
+\newpage
 \section{Discussion}
+%Why did you chose this algorithm? What complications did you encounter while creating it? What characteristics of the problem made it hard to create an algorithm for? What algorithmic category or categories does your algorithm fall into? What algorithms that we’ve studied is your algorithm similar to?%
+
+We decided to choose the greedy algorithm because by the first check point time for this project, the only algorithm we learned was greedy algorithm, and as the purpose for this project was finding the most optimal way of scheduling all classes, we thought that greedy algorithm was actually one of the best choices for this problem. Then we came up with the problem that what conditions should we base our algorithm on.
+
+We first decided to schedule different classes according to how many students want to take both classes, and schedule the two classes with the highest overlapping ratio in different time slots. We then found out that only about 70\% students could take the classes that they wanted to take. Then for the real Haverford data, the popularity of a certain class is actually determined not only by its topic, but also by its class level or difficulty, and since it is a real data, we should actually make all students to take the classes they wanted to take. 
+
+We then found out that our algorithm can only let 70\% students take the classes that they took, and we need to change our algorithm a little bit. Also, we did not distinguish class times between only need to take that class in a particular day in a week and need to take the same class twice or three times in a week. 
+
+Then the first thing we did is to combine classes that should take twice or three times a week.
+
+% NEED MORE TO WRITE ABOUT WHAT TO CHANGE.
+
 \subsection{Possible improvements}
+
 This time for the basic case we prioritizing popular classes that students want to take at the same time, and set the first valid room that can fit students and then put it in a time slot. If we can't find such a valid room, we will then put the certain class into the first classroom with capacity smaller than the class size. In this way there must be some students cannot take the class they want to take, but we maximize the classes that each students want to take.
 
 In the mean time, we are taking the classroom and professor's availability into consideration. We try to avoid the situation where 2 classes in the same time slot are taught by the same professor. Also, the class size won't exceed the capacity of the classrooms. If there are an unavoidable conflict, we will sacrifice the smallest number of students that are involved in this conflict.
@@ -119,5 +174,6 @@ Also, in the code we wrote we didn't concern the courses that Haverford students
 
 We might also need to concern about the building that different courses are put in. For example, STEM classes will only be held in KINSK Building in Haverford. we may also need to consider this. Moreover, most low level intro classes will be held three times a week, while most upper level classes will only be held twice or even once a week. When we are distributing the classes, we can also put that into consideration. Also, for foreign language classes which are held five times a week, we should try our best to put that into the schedule that has the least conflicts with other lower level classes. 
 
+\section{Recommendations}
 
 \end{document}
