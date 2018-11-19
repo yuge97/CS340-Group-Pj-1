@@ -44,9 +44,15 @@ If such a time slot doesn't exist in all rooms that can fit that class, we move 
 \begin{algorithm}[H]
 \SetKwFunction{foo}{foo}
 \SetKwProg{Fn}{Scheduling}{}{}
-\Fn{\Scheduling{(Classes, Students, Professors, Times, Rooms, hc\_classes, overlapping\_slots)}}{
+\Fn{\Scheduling{(Classes, Students, Professors, Times, Rooms)}}{
     %Build a 2D array $Schedule$
-    Rooms is a list of rooms sorted by their capacity in increasing order.
+    Initially, Rooms is a list of rooms sorted by their capacity in increasing order.
+    
+    Initially, Students is a list of students
+    
+    Initially, Professors is a list of professors indexed with class_id
+    
+    Initially, Times is a list of time slots.
     
     schedule S[][] all initialized to 0. 
     
@@ -62,9 +68,9 @@ If such a time slot doesn't exist in all rooms that can fit that class, we move 
     
     %Set a variable $ava\_rooms$ and set its value to be the number of slots that is available for the certain room
     
-    Calculate popularity of each class, and sort all classes by popularity
+    Calculate popularity of each class, and sort all classes by popularity in decreasing order.
     
-    Put the certain class in $Schedule$, and set the position of that class
+    %Put the certain class in $Schedule$, and set the position of that class
 
     \For{each class c $\in$ Classes}{
         pop = the popularity of c
