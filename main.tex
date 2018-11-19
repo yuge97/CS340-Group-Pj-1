@@ -141,9 +141,15 @@ If such a time slot doesn't exist in all rooms that can fit that class, we move 
 
 \section{Time Analysis}
 Let \textbf{n} be the number of students. 
+
 Let \textbf{l} be the average length of each student's preference list.
+
 Let \textbf{m} be the total number of classes. 
+
+Let \textbf{r} be the number of rooms. 
+
 Let \textbf{t} be the number of time slots. 
+
 Notice that $r$ and $t$ are strictly smaller than $n$.
 
 Calculating the popularity of each class takes $O(n \times l)$. Sorting all classes takes $O(m\log m)$. The first for loop in Scheduling() runs \textbf{m} iterations. Finding out the smallest room each class can fit takes $O(r)$. The inner for loop runs \textbf{t} iterations. Checking professor conflicts for each class runs $t \times r$ times. The while loop runs \textbf{r} times in the worse case. So the algorithm runs in $O(mtr^2)$.
