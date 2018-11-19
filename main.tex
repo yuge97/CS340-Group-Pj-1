@@ -45,34 +45,55 @@ If such a time slot doesn't exist in all rooms that can fit that class, we move 
 \SetKwFunction{foo}{foo}
 \SetKwProg{Fn}{Scheduling}{}{}
 \Fn{\Scheduling{(Classes, Students, Professors, Times, Rooms, hc\_classes, overlapping\_slots)}}{
-    Build a 2D array $Schedule$
+    %Build a 2D array $Schedule$
+    Rooms is a list of rooms sorted by their capacity in increasing order.
     
-    Initialize a scheduling table for overlapping time slots, and set $overlapping\_schedule$ equals to that
+    schedule S[][] all initialized to 0. 
     
-    Build a dictionary $room\_index\_dict$ keyed with index order
+    len(S) = len(Times) and len(S[0]) = len(Rooms)
     
-    Build a dictionary $Position$ keyed with class id
+    Position P[]
     
-    Build a dictionary $room\_dict$ keyed with class id and (time slot, room id) in the schedule as value
+    %Initialize a scheduling table for overlapping time slots, and set $overlapping\_schedule$ equals to that
     
-    Set a variable $ava\_rooms$ and set its value to be the number of slots that is available for the certain room
+    %Build a dictionary $Position$ keyed with class id
+    
+    %Build a dictionary $room\_dict$ keyed with class id and (time slot, room id) in the schedule as value
+    
+    %Set a variable $ava\_rooms$ and set its value to be the number of slots that is available for the certain room
     
     Calculate popularity of each class, and sort all classes by popularity
     
     Put the certain class in $Schedule$, and set the position of that class
-    
+
     \For{each class c $\in$ Classes}{
-        Find out the smallest room it can fit with an empty time slot, $r$.
+        pop = the popularity of c
         
-        \For{each time t in Times}{
-            %optional, need further discussion
-            
-            Check all $Schedule[t][r-i] (0 < i < r)$
+        \While{there is a room with capacity larger than pop that has not been checked or c is not assigned a time slot}{
         
-            Find empty $Schedule[t][r]$ without professor conflict = $c$
+            Find out the smallest room $r$, whose capacity is greater than pop.
+        
+            \For{each time t in Times}{
+                %optional, need further discussion
+                
+                Check all $Schedule[t][i] (0 < i < r)$
             
-            $Position[c] = (t,r)$
+                Find empty time slot t' without professor conflict
+                
+                \If{t' exists}{
+                    Assign the time slot t' to $c$, S[t'][r] = c
+                    
+                    $P[c] = (t',r)$
+                    
+                    break
+                }
+               
+            }
+            \If{t' does not exist}{
+                pop = the capacity of $r$
+           }
         }
+        
     }
     
     \If{there are still classes not scheduled}{
@@ -82,7 +103,7 @@ If such a time slot doesn't exist in all rooms that can fit that class, we move 
         
         Calculate popularity of each class, and sort all classes by popularity, and put the certain class in $Schedule$, set the position of that class
     }
-    return $Schedule + overlapping\_schedule, Position, room\_dict$
+    return S[][]+O[][], P[]
 }
 \end{algorithm}
 
@@ -125,7 +146,7 @@ Let \textbf{m} be the total number of classes.
 Let \textbf{t} be the number of time slots. 
 Notice that $r$ and $t$ are strictly smaller than $n$.
 
-Calculating the popularity of each class takes $O(n \times l)$. Sorting all classes takes $O(m\log m)$. The first for loop in Scheduling() runs \textbf{m} iterations. Finding out the smallest room each class can fit takes $O(1)$. The inner for loop runs \textbf{t} iterations. Checking all schedules runs $t \times r$ times, totally. So the algorithm runs in $O(mtr)$.
+Calculating the popularity of each class takes $O(n \times l)$. Sorting all classes takes $O(m\log m)$. The first for loop in Scheduling() runs \textbf{m} iterations. Finding out the smallest room each class can fit takes $O(r)$. The inner for loop runs \textbf{t} iterations. Checking professor conflicts for each class runs $t \times r$ times. The while loop runs \textbf{r} times in the worse case. So the algorithm runs in $O(mtr^2)$.
 
 \subsection{Data Structure}
 We need to build a 2D array $Schedule$ in the function scheduling, and we also need to build two dictionaries, one is $Position$, which is keyed with class id, another one is $room\_dict$, which is keyed with class id and use (time\_slot, room\_id) in the $Schedule$ as its value. 
