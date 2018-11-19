@@ -54,12 +54,21 @@ If such a time slot doesn't exist in all rooms that can fit that class, we move 
     
     Initially, Times is a list of time slots.
     
+    $T_1$[] = a list of time slots that do not overlap with each other
+    
+    $T_2[]$ = a list of all remaining time slots
+    
     schedule S[][] all initialized to 0. 
     
-    len(S) = len(Times) and len(S[0]) = len(Rooms)
+    len(S) = len($T_1$) and len(S[0]) = len(Rooms)
     
-    Position P[]
+    schedule S'[][] all initialized to 0.
     
+    len(S') = len($T_2$) and len(s'[0]) = len(Rooms)
+    
+    Position P[] 
+    
+    Position P'[]
     %Initialize a scheduling table for overlapping time slots, and set $overlapping\_schedule$ equals to that
     
     %Build a dictionary $Position$ keyed with class id
@@ -71,7 +80,24 @@ If such a time slot doesn't exist in all rooms that can fit that class, we move 
     Calculate popularity of each class, and sort all classes by popularity in decreasing order.
     
     %Put the certain class in $Schedule$, and set the position of that class
-
+    S[][] = fillSchedule(S, P, Classes, $T_1$, Rooms, Professors)
+    
+    
+    \While{there are still classes not scheduled}{
+        %// Move on to $overlapping\_schedule$
+        
+        %Set a variable $ava\_rooms$ and set its value to be the number of slots that is available for the certain room
+        
+        %Calculate popularity of each class, and sort all classes by popularity, and put the certain class in $Schedule$, set the position of that class
+        S'[][] = fillSchedule(S',P', Classes, $T_2$, Rooms, Professors)
+    }
+    return S[][], S'[][], P[], P'[]
+}
+\end{algorithm}
+\begin{algorithm}
+\SetKwFunction{foo}{foo}
+\SetKwProg{Fn}{fillSchedule}{}{}
+\Fn{\test{(S, P, Classes, Times, Rooms, Professors )}}{
     \For{each class c $\in$ Classes}{
         pop = the popularity of c
         
@@ -101,18 +127,9 @@ If such a time slot doesn't exist in all rooms that can fit that class, we move 
         }
         
     }
-    
-    \If{there are still classes not scheduled}{
-        // Move on to $overlapping\_schedule$
-        
-        Set a variable $ava\_rooms$ and set its value to be the number of slots that is available for the certain room
-        
-        Calculate popularity of each class, and sort all classes by popularity, and put the certain class in $Schedule$, set the position of that class
-    }
-    return S[][]+O[][], P[]
+    return S
 }
 \end{algorithm}
-
 \begin{algorithm}[H]
 \SetKwFunction{foo}{foo}
 \SetKwProg{Fn}{Test}{}{}
