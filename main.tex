@@ -305,10 +305,29 @@ We didn't concern the courses that Haverford students took in Bryn Mawr, which m
 \newpage
 \section{Experimental Analysis}
 \subsection{Time Analysis}
-Based on out time analysis, the run time is roughly linear to $mtr$.
+Based on our time analysis, the run time is roughly linear to $mtr^2$.
 
 \subsection{Solution Quality Analysis}
-For basic data, we can satisfy around 70\% to 75\% student preference. For Haverford data, we can satisfy around 90\% student preference. % NEED TO CHECK
+For basic data, we can satisfy around 75\% to 100\% student preference. For Haverford data, we can satisfy around 90\% student preference. % NEED TO CHECK
+
+Table for the basic data:
+\begin{table}[h]
+\begin{tabular}{|l|l|l|l|l|l|}
+\hline
+\# of rooms & \# of classes & \# of class times & \# of students & percentage & time     \\ \hline
+10          & 30            & 10                & 200            & 0.88125    & 0.00295  \\ \hline
+10          & 80            & 10                & 200            & 0.86125    & 0.00407  \\ \hline
+5           & 80            & 20                & 200            & 0.94875    & 0.00285  \\ \hline
+20          & 80            & 5                 & 200            & 0.73625    & 0.003806 \\ \hline
+50          & 200           & 50                & 1000           & 0.97525    & 0.03513  \\ \hline
+500         & 200           & 50                & 1000           & 0.972      & 2.2292   \\ \hline
+50          & 200           & 500               & 1000           & 1          & 0.01889  \\ \hline
+100         & 4500          & 50                & 10000          & 0.972125   & 1.20007  \\ \hline
+100         & 4500          & 100               & 10000          & 0.985625   & 1.32053  \\ \hline
+\end{tabular}
+\end{table}
+
+Table for the Haverford data:
 
 
 % we are satisfying around \%80 student preference. However, we are not considering time slot overlapping. In other words, for two time slots one from 1 to 4 pm on Monday, and the other one from 1 to 2 pm on Monday, we are considering them as non overlapping slots. Thus the actual quality of Haverford data should be worse 80\%. Based on out time analysis, the runtime is roughly linear to $mtr$. For $mrt$ as small as a few hundreds, the program runs within 0.001 seconds. For $mrt$ around 30000, the program runs around 0.01 seconds. For $mrt$ as large as 2 millions, the program runs around 0.4 second. Roughly speaking, the runtime of the algorithm is proportional to $mtr$. 
