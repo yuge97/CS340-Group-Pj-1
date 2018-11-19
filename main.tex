@@ -21,13 +21,16 @@
 \begin{document}
 \maketitle
 \section{Abstract}
-We based our algorithm on greedy algorithm, which means that every time when we have to set a time slot and a room for a certain class, we pick the optimal classroom and time slot so that the same professor do not need to teach two or three classes at the same time, and by the mean time, the number of students who want to take this class are able to take that class is the more the better.
+We designed a greedy algorithm to solve the scheduling problem. To be brief, every time we assign a slot for a specific class, we try to minimize the its conflict. The restriction taken into consideration are professor conflicts, room restriction and student conflict.
+%We based our algorithm on greedy algorithm, which means that every time when we have to set a time slot and a room for a certain class, we pick the optimal classroom and time slot so that the same professor do not need to teach two or three classes at the same time, and by the mean time, the number of students who want to take this class are able to take that class is the more the better.
 
-By running code on our algorithm to test how our algorithm works on the basic data and Haverford data, we find out that only about 70\% percent of student preferences can be satisfied on the basic data. However, after running algorithm on Haverford data we find out that about 90\% of students preference can be satisfied. 
+From the implementation of our algorithm and that of our test method, we find out that the satisfaction rate lies between 70\% and 75\% on basic data, and 87.9\% on data from Haverford. 
 
-\newpage
+%By running code on our algorithm to test how our algorithm works on the basic data and Haverford data, we find out that only about 70\% percent of student preferences can be satisfied on the basic data. However, after running algorithm on Haverford data we find out that about 90\% of students preference can be satisfied. 
+
+%\newpage
 \section{Algorithm Description}
-We schedule all classes using the popularity of each class as main criteria. First we traverse over the student preference list and find out the number of student who want to attend each class and sort the classes from the most popular to the least popular. 
+We schedule all classes base on their popularity. The popularity of a specific class is defined as the the number of students who put the class on their preference lists.
 
 Then we sort all rooms by their sizes from small to large. Starting from the most popular class, try to assign the class to the smallest classroom $c$ it can fit in. For each time slots $t$ for $c$, check this course with all courses in the same time slot. If it is not taught by the same professor as any course in the same time, assign the class to this time. If there is no such empty time slot in this room, move to the next largest room and repeatedly checking for such a time slot. 
 
