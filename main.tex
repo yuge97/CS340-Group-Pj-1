@@ -162,11 +162,7 @@ For basic data, we can satisfy around 70\% to 75\% student preference. For Haver
 
 % However, the actual satisfaction should be less, since we are not considering time slot overlapping. In other words, for two time slots one from 1 to 4 pm on Monday, and the other one from 1 to 2 pm on Monday, we are considering them as non overlapping slots. Thus the actual quality of haverford data should be worse than 80\%.
 
-
-\newpage
 \section{Discussion}
-%Why did you chose this algorithm? What complications did you encounter while creating it? What characteristics of the problem made it hard to create an algorithm for? What algorithmic category or categories does your algorithm fall into? What algorithms that we’ve studied is your algorithm similar to?%
-
 We decided to choose the greedy algorithm because by the first check point time for this project, the only algorithm we learned was greedy algorithm, and as the purpose for this project was finding the most optimal way of scheduling all classes, we thought that greedy algorithm was actually one of the best choices for this problem. Then we came up with the problem that what conditions should we base our algorithm on.
 
 We first decided to schedule different classes according to how many students want to take both classes, and schedule the two classes with the highest overlapping ratio in different time slots. So we prioritizing popular classes that students want to take at the same time, and set the first valid room that can fit students and then put it in a time slot. If we can't find such a valid room, we will then put the certain class into the first classroom with capacity smaller than the class size. In this way there must be some students cannot take the class they want to take, but we maximize the classes that each students want to take.
@@ -175,21 +171,15 @@ In the mean time, we are taking the classroom and professor's availability into 
 
 We then found out that only about 70\% students could take the classes that they wanted to take. Then for the real Haverford data, the popularity of a certain class is actually determined not only by its topic, but also by its class level or difficulty, and since it is a real data, we should actually make all students to take the classes they wanted to take. 
 
-We then found out that our algorithm can only let 70\% students take the classes that they took, and we need to change our algorithm a little bit. Also, we did not distinguish class times between only need to take that class in a particular day in a week and need to take the same class twice or three times in a week. 
+We found out that our algorithm can only let 70\% students take the classes that they took, and we need to change our algorithm a little bit. Also, we did not distinguish class times between only need to take that class in a particular day in a week and need to take the same class twice or three times in a week. 
 
-Then the first thing we did is to combine classes that should take twice or three times a week. 
+Then the first thing we did is to combine classes that students should take twice or three times a week. We added the keys in the dictionary, and wrote new function to deal with time slots that have overlaps (e.g classes on Monday and Wednesday morning 10:30 to 11:30 and classes on Monday and Wednesday morning 10:00 to 11:30 have overlaps). Then we basically assign students for classes that have no overlapping, and then assign students for classes that have overlaps. 
 %% Need to change
 
-However, in this way, when we are computing the optimality, the optimality should be affected since we might brutally put some classes into a classroom that cannot hold the number of students that want to take that class. Yet when we were computing the optimality we didn't concern about that. Also, there might be rooms or time slots that can better fit the certain class than the way we use to set.
-
-The optimality for the most basic where the number of class is nearly the same as the product of rooms and number of time slots is slightly greater than 70 percent. We will improve this number next time. Now we only put the class into a certain time slot if there is no professor conflicts with classes in the same time slot. Next time we could improve this by choosing the valid time slot with the least number of courses in it to avoid conflicts.
-
-\subsection{Haverford data and possible constraints}
-Our algorithm for scheduling classes in Haverford doesn't change much, but this time since when we were parsing the Haverford data we did not distinguish class times between only need to take that class in a particular day in a week and need to take the same class twice or three times in a week (eg. suppose there are two classes, the first one is held on Tuesday from 1 to 4 pm, and the second one is held on Tuesday and Thursday from 1 to 2 pm. In our code we parsed the first class time into Tuesday 1 -- 4 pm and the second class time into Tuesday 1 -- 2 pm and Thursday 1 -- 2 pm, with no connection between these two time slots.) Therefore, in our algorithm a student may be distributed a class that is held on Tuesday 1 -- 4 pm (once a week) and another class that is held on Thursday 1 -- 2 pm, but this class should be held twice a week on Tuesday and Thursday afternoon.
-
+\subsection{Possible Constraints}
 Also, in the code we wrote we didn't concern the courses that Haverford students took in Bryn Mawr, which means that we basically just concern about the classes that are held in Haverford. Also, we didn't take the labs for different classes into consideration.
 
-We might also need to concern about the building that different courses are put in. For example, STEM classes will only be held in KINSK Building in Haverford. we may also need to consider this. Moreover, most low level intro classes will be held three times a week, while most upper level classes will only be held twice or even once a week. When we are distributing the classes, we can also put that into consideration. Also, for foreign language classes which are held five times a week, we should try our best to put that into the schedule that has the least conflicts with other lower level classes. 
+We might also need to concern about the building that different courses are put in. For example, STEM classes will only be held in KINSK Building in Haverford. Moreover, most low level intro classes will be held three times a week, while most upper level classes will only be held twice or even once a week. When we are distributing the classes, we can also put that into consideration. Also, for foreign language classes which are held five times a week, we should try our best to put that into the schedule that has the least conflicts with other lower level classes. 
 
 \newpage
 \section{Recommendations}
