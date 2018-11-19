@@ -29,7 +29,8 @@ From the implementation of our algorithm and that of our test method, we find ou
 %By running code on our algorithm to test how our algorithm works on the basic data and Haverford data, we find out that only about 70\% percent of student preferences can be satisfied on the basic data. However, after running algorithm on Haverford data we find out that about 90\% of students preference can be satisfied. 
 
 %\newpage
-\section{Algorithm Description}
+\section{Algorithm}
+\subsection{Description}
 We schedule all classes base on their popularity. The popularity of a specific class is defined as the the number of students who put the class on their preference lists.
 
 %Then we sort all rooms by their sizes from small to large. 
@@ -40,12 +41,11 @@ If there is no such empty time slot in this room, move to the next largest room 
 
 If such a time slot doesn't exist in all rooms that can fit that class, we move to rooms that have capacity less than the number of people registered and find a time slot without conflict and squeeze the class into that room. There has to be such a room since the product of the number of time slot and the number of rooms must be greater than the number of total classes by the way we setup the data. If there are more classes than the product, we just don't assign the rest of the classes.
 
-\section{Pseudocode}
-\begin{algorithm}[H]
+\subsection{Pseudocode for Haverford case}
+\begin{algorithm}
 \SetKwFunction{foo}{foo}
 \SetKwProg{Fn}{Scheduling}{}{}
 \Fn{\Scheduling{(Classes, Students, Professors, Times, Rooms)}}{
-    %Build a 2D array $Schedule$
     Initially, Rooms is a list of rooms sorted by their capacity in increasing order.
     
     Initially, Students is a list of students
@@ -69,31 +69,19 @@ If such a time slot doesn't exist in all rooms that can fit that class, we move 
     Position P[] 
     
     Position P'[]
-    %Initialize a scheduling table for overlapping time slots, and set $overlapping\_schedule$ equals to that
-    
-    %Build a dictionary $Position$ keyed with class id
-    
-    %Build a dictionary $room\_dict$ keyed with class id and (time slot, room id) in the schedule as value
-    
-    %Set a variable $ava\_rooms$ and set its value to be the number of slots that is available for the certain room
     
     Calculate popularity of each class, and sort all classes by popularity in decreasing order.
     
-    %Put the certain class in $Schedule$, and set the position of that class
     S[][] = fillSchedule(S, P, Classes, $T_1$, Rooms, Professors)
     
     
     \While{there are still classes not scheduled}{
-        %// Move on to $overlapping\_schedule$
-        
-        %Set a variable $ava\_rooms$ and set its value to be the number of slots that is available for the certain room
-        
-        %Calculate popularity of each class, and sort all classes by popularity, and put the certain class in $Schedule$, set the position of that class
         S'[][] = fillSchedule(S',P', Classes, $T_2$, Rooms, Professors)
     }
     return S[][], S'[][], P[], P'[]
 }
 \end{algorithm}
+
 \begin{algorithm}
 \SetKwFunction{foo}{foo}
 \SetKwProg{Fn}{fillSchedule}{}{}
@@ -106,7 +94,6 @@ If such a time slot doesn't exist in all rooms that can fit that class, we move 
             Find out the smallest room $r$, whose capacity is greater than pop.
         
             \For{each time t in Times}{
-                %optional, need further discussion
                 
                 Check all $Schedule[t][i] (0 < i < r)$
             
@@ -130,6 +117,95 @@ If such a time slot doesn't exist in all rooms that can fit that class, we move 
     return S
 }
 \end{algorithm}
+
+\begin{algorithm}
+\SetKwFunction{foo}{foo}
+\SetKwProg{Fn}{Test}{}{}
+\Fn{\test{(S, Pref, Schedule, Position)}}{
+    $count = 0$
+    
+    $total = 0$
+
+    \For{each student s in S}{
+        $total +=$ len$(Pref[s])$
+    
+        final pick = [0]$\times$ len$(Schedule)$
+
+        \For{each class c in Pref[s]}{
+            \If{c in Position}{
+                $t = Position[c][0]$    
+            
+                \If{final pick[t] is empty}{
+                    final pick[$t$] = $c$
+                 
+                    $count += 1$
+                }
+            }
+            \Else{
+                $total -= 1$
+            }
+        }
+    }
+    return $count/total$
+}
+\end{algorithm}
+
+\subsection{Pseudocode for basic data}
+\begin{algorithm}[H]
+\SetKwFunction{foo}{foo}
+\SetKwProg{Fn}{Scheduling}{}{}
+\Fn{\Scheduling{(Classes, Students, Professors, Times, Rooms)}}{
+    Initially, Rooms is a list of rooms sorted by their capacity in increasing order.
+    
+    Initially, Students is a list of students
+    
+    Initially, Professors is a list of professors indexed with class\_id
+    
+    Initially, Times is a list of time slots.
+    
+    $T$[] = a list of time slots
+    
+    schedule S[][] all initialized to 0. 
+    
+    len(S) = len($T$) $\times$ len(Rooms)
+    
+    Position P[] 
+    
+    Calculate popularity of each class, and sort all classes by popularity in decreasing order.
+    
+    \For{each class c $\in$ Classes}{
+        pop = the popularity of c
+        
+        \While{there is a room with capacity larger than pop that has not been checked or c is not assigned a time slot}{
+        
+            Find out the smallest room $r$, whose capacity is greater than pop.
+        
+            \For{each time t in Times}{
+                
+                Check all $S[t][i] (0 < i < r)$
+            
+                Find empty time slot t' without professor conflict
+                
+                \If{t' exists}{
+                    Assign the time slot t' to $c$, S[t'][r] = c
+                    
+                    $P[c] = (t',r)$
+                    
+                    break
+                }
+               
+            }
+            \If{t' does not exist}{
+                pop = the capacity of $r$
+           }
+        }
+        
+    }
+    
+    return S[][], P[], room\_dict
+}
+\end{algorithm}
+
 \begin{algorithm}[H]
 \SetKwFunction{foo}{foo}
 \SetKwProg{Fn}{Test}{}{}
@@ -162,7 +238,8 @@ If such a time slot doesn't exist in all rooms that can fit that class, we move 
 }
 \end{algorithm}
 
-\section{Time Analysis}
+
+\subsection{Time Analysis}
 Let \textbf{n} be the number of students. 
 
 Let \textbf{l} be the average length of each student's preference list.
@@ -177,11 +254,11 @@ Notice that $r$ and $t$ are strictly smaller than $n$.
 
 Calculating the popularity of each class takes $O(n \times l)$. Sorting all classes takes $O(m\log m)$. The first for loop in Scheduling() runs \textbf{m} iterations. Finding out the smallest room each class can fit takes $O(r)$. The inner for loop runs \textbf{t} iterations. Checking professor conflicts for each class runs $t \times r$ times. The while loop runs \textbf{r} times in the worse case. So the algorithm runs in $O(mtr^2)$.
 
-\subsection{Data Structure}
+\subsubsection{Data Structure}
 We need to build a 2D array $Schedule$ in the function scheduling, and we also need to build two dictionaries, one is $Position$, which is keyed with class id, another one is $room\_dict$, which is keyed with class id and use (time\_slot, room\_id) in the $Schedule$ as its value. 
 
 
-\section{Proof of Correctness}
+\subsection{Proof of Correctness}
 To prove that this algorithm works, two parts need to be shown.
 
 1. Proof of termination.
@@ -198,6 +275,32 @@ We'll prove by contradiction. Suppose that our algorithm cannot give a valid res
 
 Thus our algorithm will give a valid scheduling of all classes.
 
+\subsection{Discussion}
+We decided to choose the greedy algorithm because by the first check point time for this project, the only algorithm we learned was greedy algorithm, and as the purpose for this project was finding the most optimal way of scheduling all classes, we thought that greedy algorithm was actually one of the best choices for this problem. Then we came up with the problem that what conditions should we base our algorithm on.
+
+We first decided to schedule different classes according to how many students want to take both classes, and schedule the two classes with the highest overlapping ratio in different time slots. So we prioritizing popular classes that students want to take at the same time, and set the first valid room that can fit students and then put it in a time slot. If we can't find such a valid room, we will then put the certain class into the first classroom with capacity smaller than the class size. In this way there must be some students cannot take the class they want to take, but we maximize the classes that each students want to take.
+
+In the mean time, we are taking the classroom and professor's availability into consideration. We try to avoid the situation where 2 classes in the same time slot are taught by the same professor. Also, the class size won't exceed the capacity of the classrooms. If there are an unavoidable conflict, we will sacrifice the smallest number of students that are involved in this conflict.
+
+We then found out that only about 70\% students could take the classes that they wanted to take. Then for the real Haverford data, the popularity of a certain class is actually determined not only by its topic, but also by its class level or difficulty, and since it is a real data, we should actually make all students to take the classes they wanted to take. 
+
+We found out that our algorithm can only let 70\% students take the classes that they took, and we need to change our algorithm a little bit. Also, we did not distinguish class times between only need to take that class in a particular day in a week and need to take the same class twice or three times in a week. 
+
+Then the first thing we did is to combine classes that students should take twice or three times a week. We added the keys in the dictionary, and wrote new function to deal with time slots that have overlaps (e.g classes on Monday and Wednesday morning 10:30 to 11:30 and classes on Monday and Wednesday morning 10:00 to 11:30 have overlaps). Then we basically assign students for classes that have no overlapping, and then assign students for classes that have overlaps. 
+
+We then decided to add the building that different classes should be held in into consideration. For example, STEM classes will only be held in KINSK Building in Haverford and in Park Building in Bryn Mawr. So we wrote new functions to get the information of which classes are held in which building, and which majors have what classes.
+%% Need to change
+
+\subsection{Extra Constraints}
+We also concerned about the building that different courses are put in. For example, STEM classes will only be held in KINSK Building in Haverford. 
+
+
+%Moreover, most low level intro classes will be held three times a week, while most upper level classes will only be held twice or even once a week. When we are distributing the classes, we can also put that into consideration. Also, for foreign language classes which are held five times a week, we should try our best to put that into the schedule that has the least conflicts with other lower level classes. 
+
+\subsection{Improvements}
+We didn't concern the courses that Haverford students took in Bryn Mawr, which means that we basically just concern about the classes that are held in Haverford. Also, we didn't take the labs for different classes into consideration.
+
+
 
 \newpage
 \section{Experimental Analysis}
@@ -212,24 +315,7 @@ For basic data, we can satisfy around 70\% to 75\% student preference. For Haver
 
 % However, the actual satisfaction should be less, since we are not considering time slot overlapping. In other words, for two time slots one from 1 to 4 pm on Monday, and the other one from 1 to 2 pm on Monday, we are considering them as non overlapping slots. Thus the actual quality of haverford data should be worse than 80\%.
 
-\section{Discussion}
-We decided to choose the greedy algorithm because by the first check point time for this project, the only algorithm we learned was greedy algorithm, and as the purpose for this project was finding the most optimal way of scheduling all classes, we thought that greedy algorithm was actually one of the best choices for this problem. Then we came up with the problem that what conditions should we base our algorithm on.
 
-We first decided to schedule different classes according to how many students want to take both classes, and schedule the two classes with the highest overlapping ratio in different time slots. So we prioritizing popular classes that students want to take at the same time, and set the first valid room that can fit students and then put it in a time slot. If we can't find such a valid room, we will then put the certain class into the first classroom with capacity smaller than the class size. In this way there must be some students cannot take the class they want to take, but we maximize the classes that each students want to take.
-
-In the mean time, we are taking the classroom and professor's availability into consideration. We try to avoid the situation where 2 classes in the same time slot are taught by the same professor. Also, the class size won't exceed the capacity of the classrooms. If there are an unavoidable conflict, we will sacrifice the smallest number of students that are involved in this conflict.
-
-We then found out that only about 70\% students could take the classes that they wanted to take. Then for the real Haverford data, the popularity of a certain class is actually determined not only by its topic, but also by its class level or difficulty, and since it is a real data, we should actually make all students to take the classes they wanted to take. 
-
-We found out that our algorithm can only let 70\% students take the classes that they took, and we need to change our algorithm a little bit. Also, we did not distinguish class times between only need to take that class in a particular day in a week and need to take the same class twice or three times in a week. 
-
-Then the first thing we did is to combine classes that students should take twice or three times a week. We added the keys in the dictionary, and wrote new function to deal with time slots that have overlaps (e.g classes on Monday and Wednesday morning 10:30 to 11:30 and classes on Monday and Wednesday morning 10:00 to 11:30 have overlaps). Then we basically assign students for classes that have no overlapping, and then assign students for classes that have overlaps. 
-%% Need to change
-
-\subsection{Possible Constraints}
-Also, in the code we wrote we didn't concern the courses that Haverford students took in Bryn Mawr, which means that we basically just concern about the classes that are held in Haverford. Also, we didn't take the labs for different classes into consideration.
-
-We might also need to concern about the building that different courses are put in. For example, STEM classes will only be held in KINSK Building in Haverford. Moreover, most low level intro classes will be held three times a week, while most upper level classes will only be held twice or even once a week. When we are distributing the classes, we can also put that into consideration. Also, for foreign language classes which are held five times a week, we should try our best to put that into the schedule that has the least conflicts with other lower level classes. 
 
 \newpage
 \section{Recommendations}
