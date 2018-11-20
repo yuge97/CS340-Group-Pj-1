@@ -171,6 +171,8 @@ If such a time slot doesn't exist in all rooms that can fit that class, we move 
     
     Position P[] 
     
+    room\_dict = {}
+    
     Calculate popularity of each class, and sort all classes by popularity in decreasing order.
     
     \For{each class c $\in$ Classes}{
@@ -198,6 +200,8 @@ If such a time slot doesn't exist in all rooms that can fit that class, we move 
             \If{t' does not exist}{
                 pop = the capacity of $r$
            }
+           
+           $room\_dict[c] = (t + 1, room\_id)$
         }
         
     }
@@ -252,11 +256,14 @@ Let \textbf{t} be the number of time slots.
 
 Notice that $r$ and $t$ are strictly smaller than $n$.
 
-Calculating the popularity of each class takes $O(n \times l)$. Sorting all classes takes $O(m\log m)$. The first for loop in Scheduling() runs \textbf{m} iterations. Finding out the smallest room each class can fit takes $O(r)$. The inner for loop runs \textbf{t} iterations. Checking professor conflicts for each class runs $t \times r$ times. The while loop runs \textbf{r} times in the worse case. So the algorithm runs in $O(mtr^2)$.
+Calculating the popularity of each class takes $O(n \times l)$. Sorting all classes takes $O(m\log m)$. The first for loop in Scheduling() runs \textbf{m} iterations. Finding out the smallest room each class can fit takes $O(r)$. The inner for loop runs \textbf{t} iterations. Checking professor conflicts for each class runs $t \times r$ times. The while loop runs \textbf{r} times in the worse case. So the whole loops will run $O(m) \cdot O(r) \cdot (O(r) + O(tr)) = O(mtr^2)$. Since in this case $t$ is only a small constant, we can simplify the run time to be $O(mr^2)$. 
+
+Thus the algorithm runs in $O(nl) + O(m\log m) + O(mr^2) = O(nl) + O(mr^2)$, depends on the value of $nl$ and $mr^2$.
 
 \subsubsection{Data Structure}
-We need to build a 2D array $Schedule$ in the function scheduling, and we also need to build two dictionaries, one is $Position$, which is keyed with class id, another one is $room\_dict$, which is keyed with class id and use (time\_slot, room\_id) in the $Schedule$ as its value. 
+For the basic case, we need to build a 2D array $Schedule$ in the function scheduling, and an array $T$ to be the list of time slots and we also need to build an array $P$ to denote the position of the courses. We also need a dictionary $room\_dict$, which is keyed with class id and use (time\_slot, room\_id) in the $Schedule$ as its value. 
 
+For the Haverford data, we also need to build two 2D arrays $Schedule$ and $overlapping\_schedule$ in the function scheduling, and four dictionaries, $room\_index\_dict$, which is keyed by the room index, $Position$, which is keyed by class id, $room\_dict$, which is also keyed by class id and use (time\_slot, room\_id) in the $Schedule$ as its value, and $over\_position$, which is keyed by class id.
 
 \subsection{Proof of Correctness}
 To prove that this algorithm works, two parts need to be shown.
@@ -273,7 +280,9 @@ For the Haverford case, all process are the same until it reaches where we call 
 
 \textit{Proof of validity:}
 
-We'll prove by contradiction. Suppose that our algorithm cannot give a valid result, which means that there must be some classes not been put into the class schedule. However, since when we multiplying the number of rooms and time slots, we find out that the number of the multiplication is much bigger than the number of classes or number of professors, it is impossible for some class not being able to be put into the class schedule, which is a contradiction.
+For the basic data, we'll prove by contradiction. Suppose that our algorithm cannot give a valid result, which means that there must be some classes not been put into the class schedule. However, since when we multiplying the number of rooms and time slots, we find out that the number of the multiplication is much bigger than the number of classes or number of professors, it is impossible for some class not being able to be put into the class schedule, which is a contradiction.
+
+For the Haverfod data,
 
 Thus our algorithm will give a valid scheduling of all classes.
 
@@ -296,15 +305,14 @@ We then decided to add the building that different classes should be held in int
 \subsection{Extra Constraints}
 We also concerned about the building that different courses are put in. For example, STEM classes will only be held in KINSK Building in Haverford. 
 
+We also consider the overlapping time slots that are given in the Haverford data.
+
 Low level classes and higher level classes in the same department can be put in the same time slot. 
 
 Moreover, most low level intro classes will be held three times a week, while most upper level classes will only be held twice or even once a week. When we are distributing the classes, we can also put that into consideration. Also, for foreign language classes which are held five times a week, we should try our best to put that into the schedule that has the least conflicts with other lower level classes. 
 
-
 \subsection{Improvements}
 We didn't concern the courses that Haverford students took in Bryn Mawr, which means that we basically just concern about the classes that are held in Haverford. Also, we didn't take the labs for different classes into consideration.
-
-
 
 \newpage
 \section{Experimental Analysis}
@@ -312,7 +320,7 @@ We didn't concern the courses that Haverford students took in Bryn Mawr, which m
 Based on our time analysis, the run time is roughly linear to $mtr^2$.
 
 \subsection{Solution Quality Analysis}
-For basic data, we can satisfy around 75\% to 100\% student preference. For Haverford data, we can satisfy around 70\% student preference.
+For basic data, we can satisfy around 75\% to 100\% student preference. For Haverford data, we can satisfy around 77\% student preference.
 
 Table for the basic data:
 \begin{table}[h]
@@ -342,6 +350,6 @@ Table for the Haverford data:
 
 \newpage
 \section{Recommendations}
-% Change blue bus schedule?
+There should be no restrictions on where the classes should be held, for example, STEM classes should also be held outside the KINSK building. 
 
 \end{document}
