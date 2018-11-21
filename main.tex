@@ -41,10 +41,10 @@ If there is no such empty time slot in this room, move to the next largest room 
 
 If such a time slot doesn't exist in all rooms that can fit that class, we move to rooms that have capacity less than the number of people registered and find a time slot without conflict and squeeze the class into that room. There has to be such a room since the product of the number of time slot and the number of rooms must be greater than the number of total classes by the way we setup the data. If there are more classes than the product, we just don't assign the rest of the classes.
 
-\subsection{Pseudocode for Haverford case}
-\begin{algorithm}
+\subsection{Pseudocode for basic data}
+\begin{algorithm}[H]
 \SetKwFunction{foo}{foo}
-\SetKwProg{Fn}{Scheduling}{}{}
+\SetKwProg{Fn}{BasicScheduling}{}{}
 \Fn{\Scheduling{(Classes, Students, Professors, Times, Rooms)}}{
     Initially, Rooms is a list of rooms sorted by their capacity in increasing order.
     
@@ -53,195 +53,169 @@ If such a time slot doesn't exist in all rooms that can fit that class, we move 
     Initially, Professors is a list of professors indexed with class\_id
     
     Initially, Times is a list of time slots.
+    
+    Initially, Classes is a list of classes sorted by their popularity in decreasing order.
+    
+    schedule S[][] all initialized to 0 (len(S) = len($T$) $\times$ len(Rooms))
+    
+    \For{each class c $\in$ Classes}{
+
+        c = the most popular class that has not been assigned a time slot
+        
+        Find out the largest room $r$, whose capacity is greater than pop.
+        
+        \For{r $\in$ Rooms}{
+            \For{each time t in Times}{
+                \If{t is empty}{
+                    Check all $S[t][i] (0 < i < r)$
+                    
+                    \If{there is a professor conflict}{
+                        break
+                    }
+                    
+                    Assign t to c, S[t][r] = c
+                }
+                
+            }
+        }
+        
+    }
+    return S[][]
+}
+\end{algorithm}
+
+% \begin{algorithm}[H]
+% \SetKwFunction{foo}{foo}
+% \SetKwProg{Fn}{Test}{}{}
+% \Fn{\test{(S, Pref, Schedule, Position)}}{
+%     $count = 0$
+    
+%     $total = 0$
+
+%     \For{each student s in S}{
+%         $total +=$ len$(Pref[s])$
+    
+%         final pick = [0]$\times$ len$(Schedule)$
+
+%         \For{each class c in Pref[s]}{
+%             \If{c in Position}{
+%                 $t = Position[c][0]$    
+            
+%                 \If{final pick[t] is empty}{
+%                     final pick[$t$] = $c$
+                 
+%                     $count += 1$
+%                 }
+%             }
+%             \Else{
+%                 $total -= 1$
+%             }
+%         }
+%     }
+%     return $count/total$
+% }
+% \end{algorithm}
+
+\subsection{Pseudocode for Haverford case}
+\begin{algorithm}[H]
+\SetKwFunction{foo}{foo}
+\SetKwProg{Fn}{HCScheduling}{}{}
+\Fn{\Scheduling{(Classes, Students, Professors, Times, Rooms)}}{
+    Initially, Rooms is a list of rooms sorted by their capacity in increasing order.
+    
+    Initially, Students is a list of students
+    
+    Initially, Professors is a list of professors indexed with class\_id
+    
+    Initially, Times is a list of time slots.
+    
+    Initially, Classes is a list of classes sorted by their popularity in decreasing order.
     
     $T_1$[] = a list of time slots that do not overlap with each other
     
     $T_2[]$ = a list of all remaining time slots
     
-    schedule S[][] all initialized to 0. 
+    schedule S[][] all initialized to 0. (len(S) = len($T_1$) and len(S[0]) = len(Rooms))
     
-    len(S) = len($T_1$) and len(S[0]) = len(Rooms)
+    schedule S'[][] all initialized to 0. (len(S') = len($T_2$) and len(s'[0]) = len(Rooms))
     
-    schedule S'[][] all initialized to 0.
-    
-    len(S') = len($T_2$) and len(s'[0]) = len(Rooms)
-    
-    Position P[] 
-    
-    Position P'[]
-    
-    Calculate popularity of each class, and sort all classes by popularity in decreasing order.
-    
-    S[][] = fillSchedule(S, P, Classes, $T_1$, Rooms, Professors)
+    S[][] = BasicScheduling(S, P, Classes, $T_1$, Rooms, Professors)
     
     
     \While{there are still classes not scheduled}{
-        S'[][] = fillSchedule(S',P', Classes, $T_2$, Rooms, Professors)
+        S'[][] = BasicScheduling(S',P', Classes, $T_2$, Rooms, Professors)
     }
-    return S[][], S'[][], P[], P'[]
+    return S[][], S'[][]
 }
 \end{algorithm}
 
-\begin{algorithm}
-\SetKwFunction{foo}{foo}
-\SetKwProg{Fn}{fillSchedule}{}{}
-\Fn{\test{(S, P, Classes, Times, Rooms, Professors )}}{
-    \For{each class c $\in$ Classes}{
-        pop = the popularity of c
+% \begin{algorithm}
+% \SetKwFunction{foo}{foo}
+% \SetKwProg{Fn}{fillSchedule}{}{}
+% \Fn{\test{(S, P, Classes, Times, Rooms, Professors )}}{
+%     \For{each class c $\in$ Classes}{
+%         pop = the popularity of c
         
-        \While{there is a room with capacity larger than pop that has not been checked or c is not assigned a time slot}{
+%         \While{there is a room with capacity larger than pop that has not been checked or c is not assigned a time slot}{
         
-            Find out the smallest room $r$, whose capacity is greater than pop.
+%             Find out the smallest room $r$, whose capacity is greater than pop.
         
-            \For{each time t in Times}{
+%             \For{each time t in Times}{
                 
-                Check all $Schedule[t][i] (0 < i < r)$
+%                 Check all $Schedule[t][i] (0 < i < r)$
             
-                Find empty time slot t' without professor conflict
+%                 Find empty time slot t' without professor conflict
                 
-                \If{t' exists}{
-                    Assign the time slot t' to $c$, S[t'][r] = c
+%                 \If{t' exists}{
+%                     Assign the time slot t' to $c$, S[t'][r] = c
                     
-                    $P[c] = (t',r)$
+%                     $P[c] = (t',r)$
                     
-                    break
-                }
+%                     break
+%                 }
                
-            }
-            \If{t' does not exist}{
-                pop = the capacity of $r$
-           }
-        }
+%             }
+%             \If{t' does not exist}{
+%                 pop = the capacity of $r$
+%           }
+%         }
         
-    }
-    return S
-}
-\end{algorithm}
+%     }
+%     return S
+% }
+% \end{algorithm}
 
-\begin{algorithm}
-\SetKwFunction{foo}{foo}
-\SetKwProg{Fn}{Test}{}{}
-\Fn{\test{(S, Pref, Schedule, Position)}}{
-    $count = 0$
+% \begin{algorithm}
+% \SetKwFunction{foo}{foo}
+% \SetKwProg{Fn}{Test}{}{}
+% \Fn{\test{(S, Pref, Schedule, Position)}}{
+%     $count = 0$
     
-    $total = 0$
+%     $total = 0$
 
-    \For{each student s in S}{
-        $total +=$ len$(Pref[s])$
+%     \For{each student s in S}{
+%         $total +=$ len$(Pref[s])$
     
-        final pick = [0]$\times$ len$(Schedule)$
+%         final pick = [0]$\times$ len$(Schedule)$
 
-        \For{each class c in Pref[s]}{
-            \If{c in Position}{
-                $t = Position[c][0]$    
+%         \For{each class c in Pref[s]}{
+%             \If{c in Position}{
+%                 $t = Position[c][0]$    
             
-                \If{final pick[t] is empty}{
-                    final pick[$t$] = $c$
+%                 \If{final pick[t] is empty}{
+%                     final pick[$t$] = $c$
                  
-                    $count += 1$
-                }
-            }
-            \Else{
-                $total -= 1$
-            }
-        }
-    }
-    return $count/total$
-}
-\end{algorithm}
-
-\subsection{Pseudocode for basic data}
-\begin{algorithm}[H]
-\SetKwFunction{foo}{foo}
-\SetKwProg{Fn}{Scheduling}{}{}
-\Fn{\Scheduling{(Classes, Students, Professors, Times, Rooms)}}{
-    Initially, Rooms is a list of rooms sorted by their capacity in increasing order.
-    
-    Initially, Students is a list of students
-    
-    Initially, Professors is a list of professors indexed with class\_id
-    
-    Initially, Times is a list of time slots.
-    
-    $T$[] = a list of time slots
-    
-    schedule S[][] all initialized to 0. 
-    
-    len(S) = len($T$) $\times$ len(Rooms)
-    
-    Position P[] 
-    
-    room\_dict = {}
-    
-    Calculate popularity of each class, and sort all classes by popularity in decreasing order.
-    
-    \For{each class c $\in$ Classes}{
-        pop = the popularity of c
-        
-        \While{there is a room with capacity larger than pop that has not been checked or c is not assigned a time slot}{
-        
-            Find out the smallest room $r$, whose capacity is greater than pop.
-        
-            \For{each time t in Times}{
-                
-                Check all $S[t][i] (0 < i < r)$
-            
-                Find empty time slot t' without professor conflict
-                
-                \If{t' exists}{
-                    Assign the time slot t' to $c$, S[t'][r] = c
-                    
-                    $P[c] = (t',r)$
-                    
-                    break
-                }
-               
-            }
-            \If{t' does not exist}{
-                pop = the capacity of $r$
-           }
-           
-           $room\_dict[c] = (t + 1, room\_id)$
-        }
-        
-    }
-    
-    return S[][], P[], room\_dict
-}
-\end{algorithm}
-
-\begin{algorithm}[H]
-\SetKwFunction{foo}{foo}
-\SetKwProg{Fn}{Test}{}{}
-\Fn{\test{(S, Pref, Schedule, Position)}}{
-    $count = 0$
-    
-    $total = 0$
-
-    \For{each student s in S}{
-        $total +=$ len$(Pref[s])$
-    
-        final pick = [0]$\times$ len$(Schedule)$
-
-        \For{each class c in Pref[s]}{
-            \If{c in Position}{
-                $t = Position[c][0]$    
-            
-                \If{final pick[t] is empty}{
-                    final pick[$t$] = $c$
-                 
-                    $count += 1$
-                }
-            }
-            \Else{
-                $total -= 1$
-            }
-        }
-    }
-    return $count/total$
-}
-\end{algorithm}
-
+%                     $count += 1$
+%                 }
+%             }
+%             \Else{
+%                 $total -= 1$
+%             }
+%         }
+%     }
+%     return $count/total$
+% }
+% \end{algorithm}
 
 \subsection{Time Analysis}
 Let \textbf{n} be the number of students. 
@@ -256,14 +230,21 @@ Let \textbf{t} be the number of time slots.
 
 Notice that $r$ and $t$ are strictly smaller than $n$.
 
-Calculating the popularity of each class takes $O(n \times l)$. Sorting all classes takes $O(m\log m)$. The first for loop in Scheduling() runs \textbf{m} iterations. Finding out the smallest room each class can fit takes $O(r)$. The inner for loop runs \textbf{t} iterations. Checking professor conflicts for each class runs $t \times r$ times. The while loop runs \textbf{r} times in the worse case. So the whole loops will run $O(m) \cdot O(r) \cdot (O(r) + O(tr)) = O(mtr^2)$. Since in this case $t$ is only a small constant, we can simplify the run time to be $O(mr^2)$. 
+Calculating the popularity of each class takes $O(n \times l)$. Sorting all classes takes $O(m\log m)$. The first for loop in Scheduling() runs \textbf{m} iterations. 
+The second nested for loop runs m iterations.
+%Finding out the smallest room each class can fit takes $O(r)$. The inner for loop runs \textbf{t} iterations. 
+Checking professor conflicts for each class runs $t \times r$ times. 
+%The while loop runs \textbf{r} times in the worse case.
+So the for loops will run $O(m) \cdot O(r) \cdot (O(tr)) = O(mtr^2)$. Since in this case $t$ is a relativley small constant, we can simplify the run time of the for loop to be $O(mr^2)$. 
 
-Thus the algorithm runs in $O(nl) + O(m\log m) + O(mr^2) = O(nl) + O(mr^2)$, depends on the value of $nl$ and $mr^2$.
+Since for different institution, n, l, m, r may vary a lot, to avoid over simplification, we draw the conclusion that the scheduling algorithm runs in $O(nl) + O(m\log m) + O(mr^2) = O(nl) + O(mr^2)$.
 
-\subsubsection{Data Structure}
-For the basic case, we need to build a 2D array $Schedule$ in the function scheduling, and an array $T$ to be the list of time slots and we also need to build an array $P$ to denote the position of the courses. We also need a dictionary $room\_dict$, which is keyed with class id and use (time\_slot, room\_id) in the $Schedule$ as its value. 
+%Thus the algorithm runs in $O(nl) + O(m\log m) + O(mr^2) = O(nl) + O(mr^2)$, depends on the value of $nl$ and $mr^2$.
 
-For the Haverford data, we also need to build two 2D arrays $Schedule$ and $overlapping\_schedule$ in the function scheduling, and four dictionaries, $room\_index\_dict$, which is keyed by the room index, $Position$, which is keyed by class id, $room\_dict$, which is also keyed by class id and use (time\_slot, room\_id) in the $Schedule$ as its value, and $over\_position$, which is keyed by class id.
+%\subsubsection{Data Structure}
+%For the basic case, we need to build a 2D array $Schedule$ in the function scheduling, and an array $T$ to be the list of time slots and we also need to build an array $P$ to denote the position of the courses. We also need a dictionary $room\_dict$, which is keyed with class id and use (time\_slot, room\_id) in the $Schedule$ as its value. 
+
+%For the Haverford data, we also need to build two 2D arrays $Schedule$ and $overlapping\_schedule$ in the function scheduling, and four dictionaries, $room\_index\_dict$, which is keyed by the room index, $Position$, which is keyed by class id, $room\_dict$, which is also keyed by class id and use (time\_slot, room\_id) in the $Schedule$ as its value, and $over\_position$, which is keyed by class id.
 
 \subsection{Proof of Correctness}
 To prove that this algorithm works, two parts need to be shown.
@@ -274,9 +255,10 @@ To prove that this algorithm works, two parts need to be shown.
 
 \textit{Proof of termination:}
 
-For the basic case, build all variables only takes $O(1)$. Since the number of classes, students, professors, time slots, and rooms are all finite, calculating the popularity of each classes must terminate, and sorting all classes by popularity will terminate in the same reason. Then the first for loop will terminate because the number of classes is finite, the inner while loop will also terminate since the numbers of rooms and time slot are finite, the second for loop will also terminate since the number of elements in Times is also finite. All operations in the inner most for loop will also terminate since the number of classes, students, professors, time slots, and rooms are all finite. Since all loops in this algorithm will terminate, the algorithm will then terminate. \\
+For the basic case, build all variables only takes $O(1)$. Since the number of classes, students, professors, time slots, and rooms are all finite, calculating the popularity of each classes must terminate, and sorting all classes by popularity will terminate in the same reason. Then since all the variables are finite, all loops have to terminate. Since all loops in this algorithm will terminate, the algorithm will then terminate. \\
 
-For the Haverford case, all process are the same until it reaches where we call another function fillSchedule(). In the function fillSchedule(), the first for loop will terminate because the number of classes is finite, the inner while loop will also terminate since the numbers of rooms and time slot are finite, the second for loop will also terminate since the number of elements in Times is also finite. All operations in the inner most for loop will also terminate since the number of classes, students, professors, time slots, and rooms are all finite. Then the function will terminate. The following while loop will terminate since there must be a way to schedule all classes. Thus all loops in this algorithm terminate, which means that the algorithm will terminate. \\
+For the Haverford case, all process are the same and we create two schedule to fill, each of which uses the algorithm for the basic data. Since the algorihtm for the basic data must terminate, we can draw the conclusion that the algorihtm of Haverford data will also terminate.
+%it reaches where we call another function fillSchedule(). In the function fillSchedule(), all the loops will terminate since all input value are finite, so the function will terminate. The following while loop will terminate since there must be a way to schedule all classes. Thus all loops in this algorithm terminate, which means that the algorithm will terminate. \\
 
 \textit{Proof of validity:}
 
@@ -310,15 +292,25 @@ We also concerned about the building that different courses are put in. For exam
 In order to take in concern of this constraint, we parse extra data from the csv file: the subject a class belongs to and also all the rooms in which a certain subject could be held. Store them into two dictionaries: one is with the class number as key and their subject as value, the other where the subject is the key and the list of rooms they are allowed to be held in as value. Therefore, when we schedule a certain class, we find the department it belongs to and only schedule classes in rooms that belongs to that department.
 
 However, getting all information from the csv file can be problematic. For example, a single class number might represent different classes, and consequently, different departments. Such as class 9 represent classes with 3 different subjects. In this case, we only assign it the subject where it first appears. Another problem with this is that we are getting the rooms of certain subject from the csv file. This file, however, might only contain a portion of all possible rooms in that building. This fall will definitely reduce our performance score. But we choose to keep it this way because come up with all possible rooms by imagination could be an arduous work and would sacrifice a great amount of run time.
-\subsubsection{}
+
+\subsubsection{Overlapping time slots}
 We also consider the overlapping time slots that are given in the Haverford data.
 
 Low level classes and higher level classes in the same department can be put in the same time slot. 
 
 Moreover, most low level intro classes will be held three times a week, while most upper level classes will only be held twice or even once a week. When we are distributing the classes, we can also put that into consideration. Also, for foreign language classes which are held five times a week, we should try our best to put that into the schedule that has the least conflicts with other lower level classes. 
 
-\subsection{Improvements}
-We didn't concern the courses that Haverford students took in Bryn Mawr, which means that we basically just concern about the classes that are held in Haverford. Also, we didn't take the labs for different classes into consideration.
+\subsubsection{Lab sections}
+Moreover, lab sessions of a certain course should not be put into the same time slot with its lecture session, since for most classes that have labs, the instructor for the lecture and the instructor for the labs are the same.
+
+\subsubsection{Different class levels}
+Low level classes and higher level classes in the same department could be placed in the same time slots with each other, since for most of times the higher level classes have pre-requisite of some low level classes. Thus students that need to take the low level classes could not take the higher level classes.
+
+\subsubsection{Foreign language classes}
+Foreign language classes and ESEM class in Bryn Mawr should be placed in the schedule that has the least conflicts with low level classes, since in the usual case only freshmen and sophomores will take the foreign language classes, and the classes that relate to their majors are usually those low level classes. Thus if the foreign language classes and ESEM class are put in the same shedule with the low level intro class of a certain major, the students could not take all of them.
+
+In our code, by implementing the first two constraints, we satisfy around 77\% student preferences.
+
 
 
 \section{Experimental Analysis}
@@ -361,9 +353,6 @@ We claim that the algorithm is dominated by the term $r^2$, which is number of r
 % we are satisfying around \%80 student preference. However, we are not considering time slot overlapping. In other words, for two time slots one from 1 to 4 pm on Monday, and the other one from 1 to 2 pm on Monday, we are considering them as non overlapping slots. Thus the actual quality of Haverford data should be worse 80\%. Based on out time analysis, the runtime is roughly linear to $mtr$. For $mrt$ as small as a few hundreds, the program runs within 0.001 seconds. For $mrt$ around 30000, the program runs around 0.01 seconds. For $mrt$ as large as 2 millions, the program runs around 0.4 second. Roughly speaking, the runtime of the algorithm is proportional to $mtr$. 
 
 % However, the actual satisfaction should be less, since we are not considering time slot overlapping. In other words, for two time slots one from 1 to 4 pm on Monday, and the other one from 1 to 2 pm on Monday, we are considering them as non overlapping slots. Thus the actual quality of haverford data should be worse than 80\%.
-
-
-
 
 \section{Recommendations}
 There should be no restrictions on where the classes should be held, for example, STEM classes should also be held outside the KINSK building. 
