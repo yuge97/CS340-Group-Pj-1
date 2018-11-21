@@ -257,7 +257,8 @@ To prove that this algorithm works, two parts need to be shown.
 
 For the basic case, build all variables only takes $O(1)$. Since the number of classes, students, professors, time slots, and rooms are all finite, calculating the popularity of each classes must terminate, and sorting all classes by popularity will terminate in the same reason. Then since all the variables are finite, all loops have to terminate. Since all loops in this algorithm will terminate, the algorithm will then terminate. \\
 
-For the Haverford case, all process are the same until it reaches where we call another function fillSchedule(). In the function fillSchedule(), all the loops will terminate since all input value are finite, so the function will terminate. The following while loop will terminate since there must be a way to schedule all classes. Thus all loops in this algorithm terminate, which means that the algorithm will terminate. \\
+For the Haverford case, all process are the same and we create two schedule to fill, each of which uses the algorithm for the basic data. Since the algorihtm for the basic data must terminate, we can draw the conclusion that the algorihtm of Haverford data will also terminate.
+%it reaches where we call another function fillSchedule(). In the function fillSchedule(), all the loops will terminate since all input value are finite, so the function will terminate. The following while loop will terminate since there must be a way to schedule all classes. Thus all loops in this algorithm terminate, which means that the algorithm will terminate. \\
 
 \textit{Proof of validity:}
 
