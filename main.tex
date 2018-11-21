@@ -299,13 +299,22 @@ We then decided to add the building that different classes should be held in int
 %% Need to change
 
 \subsection{Extra Constraints}
-For Haverford data, we are adding in several more constraints to make the schedule more realistic.
+For Haverford data, we are adding several more constraints to make the schedule more realistic.
 \subsubsection{Departments and Buildings}
-We also concerned about the building that different courses are put in. For example, STEM classes will only be held in KINSK Building in Haverford. 
+We think the courses for one department should only take place in one building. 
+%We are concerned about the building that different courses are put in. 
+For example, STEM classes should only be held in KINSK Building at Haverford. 
 
-In order to take in concern of this constraint, we parse extra data from the csv file: the subject a class belongs to and also all the rooms in which a certain subject could be held. Store them into two dictionaries: one is with the class number as key and their subject as value, the other where the subject is the key and the list of rooms they are allowed to be held in as value. Therefore, when we schedule a certain class, we find the department it belongs to and only schedule classes in rooms that belongs to that department.
+In order to implement this constraint, we need extra information about possible rooms for each department and for each class from the raw csv file.
+%we parse extra data from the csv file: the subject a class belongs to and also all the rooms in which a certain subject could be held. 
+We store the information into two dictionaries: one is keyed with class id and each key has its subject as value, and the other is keyed with subject and each key has a list of rooms as value. Thus, for each class, we can easily find out all possible rooms it can be in.
+During scheduling process, each class can only be assigned to its possible rooms. 
+%We store the information into two dictionaries: one is keyed with class id and has its subject as value, the other where the subject is the key and the list of rooms they are allowed to be held in as value. 
+%Therefore, when we schedule a certain class, we find the department it belongs to and only schedule classes in rooms that belongs to that department.
 
-However, getting all information from the csv file can be problematic. For example, a single class number might represent different classes, and consequently, different departments. Such as class 9 represent classes with 3 different subjects. In this case, we only assign it the subject where it first appears. Another problem with this is that we are getting the rooms of certain subject from the csv file. This file, however, might only contain a portion of all possible rooms in that building. This fall will definitely reduce our performance score. But we choose to keep it this way because come up with all possible rooms by imagination could be an arduous work and would sacrifice a great amount of run time.
+However, getting the information from the csv file can be problematic because the raw data in the csv file is not perfect. For example, a single class number might represent classes of different departments.
+%, and consequently, different departments. 
+For example, class 9 represent classes with 3 different subjects. In this case, we only assign it the subject where it first appears. Another problem with this is that we are getting the rooms of certain subject from the csv file. This file, however, might only contain a portion of all possible rooms in that building. This fall will definitely reduce our performance score. But we choose to keep it this way because come up with all possible rooms by imagination could be an arduous work and would sacrifice a great amount of run time.
 
 \subsubsection{Overlapping time slots}
 We also consider the overlapping time slots that are given in the Haverford data.
