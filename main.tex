@@ -274,9 +274,9 @@ To prove that this algorithm works, two parts need to be shown.
 
 \textit{Proof of termination:}
 
-For the basic case, build all variables only takes $O(1)$. Since the number of classes, students, professors, time slots, and rooms are all finite, calculating the popularity of each classes must terminate, and sorting all classes by popularity will terminate in the same reason. Then the first for loop will terminate because the number of classes is finite, the inner while loop will also terminate since the numbers of rooms and time slot are finite, the second for loop will also terminate since the number of elements in Times is also finite. All operations in the inner most for loop will also terminate since the number of classes, students, professors, time slots, and rooms are all finite. Since all loops in this algorithm will terminate, the algorithm will then terminate. \\
+For the basic case, build all variables only takes $O(1)$. Since the number of classes, students, professors, time slots, and rooms are all finite, calculating the popularity of each classes must terminate, and sorting all classes by popularity will terminate in the same reason. Then since all the variables are finite, all loops have to terminate. Since all loops in this algorithm will terminate, the algorithm will then terminate. \\
 
-For the Haverford case, all process are the same until it reaches where we call another function fillSchedule(). In the function fillSchedule(), the first for loop will terminate because the number of classes is finite, the inner while loop will also terminate since the numbers of rooms and time slot are finite, the second for loop will also terminate since the number of elements in Times is also finite. All operations in the inner most for loop will also terminate since the number of classes, students, professors, time slots, and rooms are all finite. Then the function will terminate. The following while loop will terminate since there must be a way to schedule all classes. Thus all loops in this algorithm terminate, which means that the algorithm will terminate. \\
+For the Haverford case, all process are the same until it reaches where we call another function fillSchedule(). In the function fillSchedule(), all the loops will terminate since all input value are finite, so the function will terminate. The following while loop will terminate since there must be a way to schedule all classes. Thus all loops in this algorithm terminate, which means that the algorithm will terminate. \\
 
 \textit{Proof of validity:}
 
@@ -310,6 +310,7 @@ We also concerned about the building that different courses are put in. For exam
 In order to take in concern of this constraint, we parse extra data from the csv file: the subject a class belongs to and also all the rooms in which a certain subject could be held. Store them into two dictionaries: one is with the class number as key and their subject as value, the other where the subject is the key and the list of rooms they are allowed to be held in as value. Therefore, when we schedule a certain class, we find the department it belongs to and only schedule classes in rooms that belongs to that department.
 
 However, getting all information from the csv file can be problematic. For example, a single class number might represent different classes, and consequently, different departments. Such as class 9 represent classes with 3 different subjects. In this case, we only assign it the subject where it first appears. Another problem with this is that we are getting the rooms of certain subject from the csv file. This file, however, might only contain a portion of all possible rooms in that building. This fall will definitely reduce our performance score. But we choose to keep it this way because come up with all possible rooms by imagination could be an arduous work and would sacrifice a great amount of run time.
+
 \subsubsection{Overlapping time slots}
 We also consider the overlapping time slots that are given in the Haverford data.
 
@@ -317,8 +318,17 @@ Low level classes and higher level classes in the same department can be put in 
 
 Moreover, most low level intro classes will be held three times a week, while most upper level classes will only be held twice or even once a week. When we are distributing the classes, we can also put that into consideration. Also, for foreign language classes which are held five times a week, we should try our best to put that into the schedule that has the least conflicts with other lower level classes. 
 
-\subsection{Improvements}
-We didn't concern the courses that Haverford students took in Bryn Mawr, which means that we basically just concern about the classes that are held in Haverford. Also, we didn't take the labs for different classes into consideration.
+\subsubsection{Lab sections}
+Moreover, lab sessions of a certain course should not be put into the same time slot with its lecture session, since for most classes that have labs, the instructor for the lecture and the instructor for the labs are the same.
+
+\subsubsection{Different class levels}
+Low level classes and higher level classes in the same department could be placed in the same time slots with each other, since for most of times the higher level classes have pre-requisite of some low level classes. Thus students that need to take the low level classes could not take the higher level classes.
+
+\subsubsection{Foreign language classes}
+Foreign language classes and ESEM class in Bryn Mawr should be placed in the schedule that has the least conflicts with low level classes, since in the usual case only freshmen and sophomores will take the foreign language classes, and the classes that relate to their majors are usually those low level classes. Thus if the foreign language classes and ESEM class are put in the same shedule with the low level intro class of a certain major, the students could not take all of them.
+
+In our code, by implementing the first two constraints, we satisfy around 77\% student preferences.
+
 
 
 \section{Experimental Analysis}
