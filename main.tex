@@ -329,19 +329,26 @@ By generating different sets of basic data and apply our algorithm, we get the f
 10          & 80            & 10                & 200            & 0.86125    & 0.00407  \\ \hline
 5           & 80            & 20                & 200            & 0.94875    & 0.00285  \\ \hline
 20          & 80            & 5                 & 200            & 0.73625    & 0.003806 \\ \hline
+\hline
 50          & 200           & 50                & 1000           & 0.97525    & 0.03513  \\ \hline
-500         & 200           & 50                & 1000           & 0.9575     & 2.2292   \\ \hline
-500         & 200           & 50                & 1000           & 0.89945    & 2.12678  \\ \hline
-100         & 4500          & 50                & 10000          & 0.972125   & 1.20007  \\ \hline
-100         & 4500          & 100               & 10000          & 0.985625   & 1.32053  \\ \hline
+\hline
+50          & \textbf{400}           & 50                & 1000           & 0.978    & 0.0169  \\ \hline
+50          & \textbf{800}           & 50                & 1000           & 0.975    & 0.0447  \\ \hline
+50          & \textbf{1600}           & 50                & 1000           & 0.971    & 0.1267  \\ \hline
+\textbf{100}          & 200           & 50                & 1000           & 0.976    & 0.0507  \\ \hline
+\textbf{200}          & 200           & 50                & 1000           & 0.974    & 0.1896  \\ \hline
+\textbf{400}          & 200           & 50                & 1000           & 0.973    & 1.392  \\ \hline
+50          & 200           & 50                & \textbf{2000}           & 0.9745    & 0.04099  \\ \hline
+50          & 200           & 50                & \textbf{4000}           & 0.977    & 0.0528  \\ \hline
+50          & 200           & 50                & \textbf{8000}           & 0.976    & 0.0765  \\ \hline
 \end{tabular}
 \end{table}
 \subsection{Optimization Analysis}
-Notice that the first 4 lines focus on the satisfaction rate analysis and the last 5 lines focus on the run time of the algorithm on different data sets.
+Notice that the first 4 lines focus on the satisfaction rate analysis and the last 5 lines focus on the run time of the algorithm on larger data sizes.
 
 For the first 4 lines, the total empty slots, namely the product of number of rooms and the number of class times is always 100 and the number of student is fixed at 200. Changing other factors of the data can show the factors that influence the satisfaction rate. If we have same number of rooms and time slots, the increasing number of classes would decrease the satisfaction rate. If we fix the number of classes to be 80 and increase the rate of rooms/times, we are getting a decreased percent satisfaction. This is because less number of time slots will result in higher possibility of conflicts intuitively. On the contrary, if we increase the number of time slots, the probability of course conflict will reduce accordingly.
 \subsection{Run Time Analysis}
-
+We claim that the algorithm is dominated by the term $r^2$, which is number of rooms squared. Therefore the run time should be closely related to the number of rooms. It is indeed the case if we look at the table above. Notice that when we move from row 5 to row 6, the number of rooms increased by 10 times
 
 % we are satisfying around \%80 student preference. However, we are not considering time slot overlapping. In other words, for two time slots one from 1 to 4 pm on Monday, and the other one from 1 to 2 pm on Monday, we are considering them as non overlapping slots. Thus the actual quality of Haverford data should be worse 80\%. Based on out time analysis, the runtime is roughly linear to $mtr$. For $mrt$ as small as a few hundreds, the program runs within 0.001 seconds. For $mrt$ around 30000, the program runs around 0.01 seconds. For $mrt$ as large as 2 millions, the program runs around 0.4 second. Roughly speaking, the runtime of the algorithm is proportional to $mtr$. 
 
