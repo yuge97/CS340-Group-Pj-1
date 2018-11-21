@@ -44,8 +44,6 @@ If such a time slot doesn't exist in all rooms that can fit that class, we move 
 \subsection{Pseudocode for basic data}
 \begin{algorithm}[H]
 \SetKwFunction{foo}{foo}
-\SetKwProg{Fn}{BasicScheduling}{}{}
-\Fn{\Scheduling{(Classes, Students, Professors, Times, Rooms)}}{
     Initially, Rooms is a list of rooms sorted by their capacity in increasing order.
     
     Initially, Students is a list of students
@@ -55,6 +53,9 @@ If such a time slot doesn't exist in all rooms that can fit that class, we move 
     Initially, Times is a list of time slots.
     
     Initially, Classes is a list of classes sorted by their popularity in decreasing order.
+    
+\SetKwProg{Fn}{BasicScheduling}{}{}
+\Fn{\Scheduling{(Classes, Students, Professors, Times, Rooms)}}{
     
     schedule S[][] all initialized to 0 (len(S) = len($T$) $\times$ len(Rooms))
     
@@ -116,10 +117,16 @@ If such a time slot doesn't exist in all rooms that can fit that class, we move 
 % }
 % \end{algorithm}
 
+
 \subsection{Pseudocode for Haverford case}
+
 \begin{algorithm}[H]
+
 \SetKwFunction{foo}{foo}
+
 \SetKwProg{Fn}{HCScheduling}{}{}
+
+
 \Fn{\Scheduling{(Classes, Students, Professors, Times, Rooms)}}{
     Initially, Rooms is a list of rooms sorted by their capacity in increasing order.
     
@@ -130,7 +137,7 @@ If such a time slot doesn't exist in all rooms that can fit that class, we move 
     Initially, Times is a list of time slots.
     
     Initially, Classes is a list of classes sorted by their popularity in decreasing order.
-    
+        
     $T_1$[] = a list of time slots that do not overlap with each other
     
     $T_2[]$ = a list of all remaining time slots
@@ -262,11 +269,15 @@ For the Haverford case, all process are the same and we create two schedule to f
 
 \textit{Proof of validity:}
 
-For the basic data, we'll prove by contradiction. Suppose that our algorithm cannot give a valid result, which means that there must be some classes not been put into the class schedule. However, since when we multiplying the number of rooms and time slots, we find out that the number of the multiplication is much bigger than the number of classes or number of professors, it is impossible for some class not being able to be put into the class schedule, which is a contradiction.
+Suppose that our schedule is not valid, which means that there exists two courses $c_1$ and $c_2$ that are assigned to the same time slot t and are taught by the same professor p. Also suppose $c_1$ is more popular than $c_2$. Then $c_1$ and $c_2$ are in different rooms $r_1$ and $r_2$. 
+Either there are 
+When $c_2$ is being checked, all other time slots all have professor conflicts with $c_1$.
 
-For the Haverfod data,
+%For the basic data, we'll prove by contradiction. Suppose that our algorithm cannot give a valid result, which means that there must be some classes not been put into the class schedule. However, since when we multiplying the number of rooms and time slots, we find out that the number of the multiplication is much bigger than the number of classes or number of professors, it is impossible for some class not being able to be put into the class schedule, which is a contradiction.
 
-Thus our algorithm will give a valid scheduling of all classes.
+%For the Haverfod data,
+
+%Thus our algorithm will give a valid scheduling of all classes.
 
 \subsection{Discussion}
 We decided to choose the greedy algorithm because by the first check point time for this project, the only algorithm we learned was greedy algorithm, and as the purpose for this project was finding the most optimal way of scheduling all classes, we thought that greedy algorithm was actually one of the best choices for this problem. Then we came up with the problem that what conditions should we base our algorithm on.
