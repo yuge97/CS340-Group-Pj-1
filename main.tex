@@ -314,7 +314,13 @@ During scheduling process, each class can only be assigned to its possible rooms
 
 However, getting the information from the csv file can be problematic because the raw data in the csv file is not perfect. For example, a single class number might represent classes of different departments.
 %, and consequently, different departments. 
-For example, class 9 represent classes with 3 different subjects. In this case, we only assign it the subject where it first appears. Another problem with this is that we are getting the rooms of certain subject from the csv file. This file, however, might only contain a portion of all possible rooms in that building. This fall will definitely reduce our performance score. But we choose to keep it this way because come up with all possible rooms by imagination could be an arduous work and would sacrifice a great amount of run time.
+For example, class 9 represent classes with 3 different subjects. 
+In this case, we only extract relevant information of class 9 when it appears the first time, since this is what the given parsing algorithm for HC data does.
+%In this case, we only assign it the subject where it first appears. Another problem with this is that we are getting the rooms of certain subject from the csv file. 
+
+During the process of parsing the csv file, we found out that not every room in the building is assigned a class. There might be a realistic reason, but if more rooms can be used for classes, then the satisfaction rate can go up. Thus we recommend opening up as many rooms as possible for classes. 
+
+%This file, however, might only contain a portion of all possible rooms in that building. This fall will definitely reduce our performance score. But we choose to keep it this way because come up with all possible rooms by imagination could be an arduous work and would sacrifice a great amount of run time.
 
 \subsubsection{Overlapping time slots}
 We also consider the overlapping time slots that are given in the Haverford data.
