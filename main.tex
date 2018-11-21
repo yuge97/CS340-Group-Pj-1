@@ -281,7 +281,9 @@ Therefore, there cannot be two courses $c_1$ and $c_2$ that are assigned to the 
 \subsection{Discussion}
 The scheduling problem is an optimization problem, so we choose greedy algorithm, given our limited knowledge on how to solve optimization problems. This problem is different from the optimization problem we encountered in class and is more difficult, because it has a lot of constraints that we need to take into consideration. Additionally, some constraints are more significant then others, and thus we have to determine what constraints to prioritize, and we will also need to decide whether we should let conflicts happen when they are not avoidable.
 
-We are inspired by the earliest-finish time algorithm. Earliest-finish time algorithm picks the earliest finish task so that the time interval left for other tasks is maximized. Similarly, in our algorithm, we are prioritizing more popular classes by assigning them larger rooms so that we can maximize the number of students that are satisfied.
+Moreover, we are inspired by the earliest-finish time algorithm. Earliest-finish time algorithm picks the earliest finish task so that the time interval left for other tasks is maximized. Similarly, in our algorithm, we are prioritizing more popular classes by assigning them larger rooms so that we can maximize the number of students that are satisfied. 
+
+These are the main reasons we choose greedy to approach this problem.
 
 %We decided to choose the greedy algorithm because by the first check point time for this project, the only algorithm we learned was greedy algorithm, and as the purpose for this project was finding the most optimal way of scheduling all classes, we thought that greedy algorithm was actually one of the best choices for this problem. Then we came up with the problem that what conditions should we base our algorithm on.
 
@@ -289,13 +291,13 @@ We are inspired by the earliest-finish time algorithm. Earliest-finish time algo
 
 %In the mean time, we are taking the classroom and professor's availability into consideration. We try to avoid the situation where 2 classes in the same time slot are taught by the same professor. Also, the class size won't exceed the capacity of the classrooms. If there are an unavoidable conflict, we will sacrifice the smallest number of students that are involved in this conflict.
 
-We then found out that only about 70\% students preference could be satisfied. Then for the real Haverford data, the popularity of a certain class is actually determined not only by its topic, but also by its class level or difficulty, and since it is a real data, we should actually make all students to take the classes they wanted to take. 
+%We then found out that only about 70\% students preference could be satisfied. Then for the real Haverford data, the popularity of a certain class is actually determined not only by its topic, but also by its class level or difficulty, and since it is a real data, we should actually make all students to take the classes they wanted to take. 
 
-We found out that our algorithm can only let 70\% of students preference be satisfied, and we need to change our algorithm a little bit. Also, we did not distinguish class times between only need to take that class in a particular day in a week and need to take the same class twice or three times in a week. 
+%We found out that our algorithm can only let 70\% of students preference be satisfied, and we need to change our algorithm a little bit. Also, we did not distinguish class times between only need to take that class in a particular day in a week and need to take the same class twice or three times in a week. 
 
-Then the first thing we did is to combine classes that students should take twice or three times a week. We added the keys in the dictionary, and wrote new function to deal with time slots that have overlaps (e.g classes on Monday and Wednesday morning 10:30 to 11:30 and classes on Monday and Wednesday morning 10:00 to 11:30 have overlaps). Then we basically assign students for classes that have no overlapping, and then assign students for classes that have overlaps. 
+%Then the first thing we did is to combine classes that students should take twice or three times a week. We added the keys in the dictionary, and wrote new function to deal with time slots that have overlaps (e.g classes on Monday and Wednesday morning 10:30 to 11:30 and classes on Monday and Wednesday morning 10:00 to 11:30 have overlaps). Then we basically assign students for classes that have no overlapping, and then assign students for classes that have overlaps. 
 
-We then decided to add the building that different classes should be held in into consideration. For example, STEM classes will only be held in KINSK Building in Haverford and in Park Building in Bryn Mawr. So we wrote new functions to get the information of which classes are held in which building, and which majors have what classes.
+%We then decided to add the building that different classes should be held in into consideration. For example, STEM classes will only be held in KINSK Building in Haverford and in Park Building in Bryn Mawr. So we wrote new functions to get the information of which classes are held in which building, and which majors have what classes.
 %% Need to change
 
 \subsection{Extra Constraints}
@@ -330,7 +332,7 @@ Given the 2 lists, when we are scheduling and looking for empty time slots, we o
 It is obvious that overlapping time slots would cause a decrease in optimization rate. Therefore it would be better for college to avoid assigning classes in times that overlaps with each other. A reasonable change when scheduling classes is to make a time grid for all classes that no 2 time slots overlaps. This would make scheduling easier and make students remember their schedule better.
 
 \subsubsection{Lab sections}
-Moreover, lab sessions of a certain course should not be put into the same time slot with its lecture session, since for most classes that have labs, the instructor for the lecture and the instructor for the labs are the same.
+Moreover, lab sessions of a certain course should not be put into the same time slot with its lecture session, since the instructor for the lecture and the instructor for the labs may not be the same.
 
 \subsubsection{Different class levels}
 Low level classes and higher level classes in the same department could be placed in the same time slots with each other, since for most of times the higher level classes have pre-requisite of some low level classes. Thus students that need to take the low level classes could not take the higher level classes.
@@ -340,8 +342,6 @@ Foreign language classes and ESEM class in Bryn Mawr should be placed in the sch
 
 In our code, by implementing the first two constraints, we satisfy around 77\% student preferences.
 
-
-
 \section{Experimental Analysis}
 %\subsection{Time Analysis}
 %Based on our time analysis, the run time is roughly linear to $mr^2 + nl$.
@@ -349,7 +349,10 @@ In our code, by implementing the first two constraints, we satisfy around 77\% s
 %\subsection{Solution Quality Analysis}
 For Haverford data, we can satisfy around 77\% student preference. This number is fixed; so in order to actually test our algorithm, we run the basic data and compare the difference of satisfaction rate and time needed.
 
+
 By generating different sets of basic data and apply our algorithm, we get the following table for the basic data: Table\ref{t1}
+
+
 \begin{table}[h]
 \begin{tabular}{|l|l|l|l|l|l|}
 \hline
@@ -394,10 +397,10 @@ In conclusion, we have verified that the run time of our algorithm is indeed lin
 % However, the actual satisfaction should be less, since we are not considering time slot overlapping. In other words, for two time slots one from 1 to 4 pm on Monday, and the other one from 1 to 2 pm on Monday, we are considering them as non overlapping slots. Thus the actual quality of haverford data should be worse than 80\%.
 
 \section{Recommendations}
-There should be no restrictions on where the classes should be held, for example, STEM classes should also be held outside the KINSK building. The reason for this is that before we add the extra constraints of departments and buildings, we could satisfy around 85\% students preference, and after we add the certain constraints, only around 75\% students preference could be satisfied.
+%There should be no restrictions on where the classes should be held, for example, STEM classes should also be held outside the KINSK building. The reason for this is that before we add the extra constraints of departments and buildings, we could satisfy around 85\% students preference, and after we add the certain constraints, only around 75\% students preference could be satisfied.
 
 There should also be more non-overlapping time slots available for classes and professors to choose. Currently all classes end at 4 pm, but if we could let classes held in the evening, there would be more non-overlapping time slots. The reason for this is obvious from the table we made in experimental analysis for basic data, that even if the number of rooms is decreasing, as long as the number of time slots increases, the satisfaction rate will increase (the second and the third line). On the other hand, even if the number of rooms increases, since the number of class time decreases, the satisfaction rate still decreases (the second and the fourth line).
 
-We should also let more rooms in certain buildings be used to hold classes. In section 2.7.1 we discovered that not all classrooms will be used in a certain building, and only a small portion of all possible rooms in that building will be used. Since we know that if there are more rooms with larger capacity, for the most popular courses we could enroll more students, so that the students preference satisfaction rate could increase. Even if the rooms that are not used currently are only small rooms, the fact that we have more rooms will not decrease the satisfaction rate of students preferences, as shown in the table we generated in experimental analysis for basic data. 
+We should also let more rooms in certain buildings be used to hold classes if possible. In section 2.7.1 we discovered that not all classrooms will be used in a certain building, and only a small portion of all possible rooms in that building will be used. Since we know that if there are more rooms with larger capacity, for the most popular courses we could enroll more students, so that the students preference satisfaction rate could increase. Even if the rooms that are not used currently are only small rooms, the fact that we have more rooms will not decrease the satisfaction rate of students preferences, as shown in the table we generated in experimental analysis for basic data. 
 
 \end{document}
