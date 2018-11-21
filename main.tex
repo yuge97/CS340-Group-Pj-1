@@ -241,10 +241,10 @@ Since for different institution, n, l, m, r may vary a lot, to avoid over simpli
 
 %Thus the algorithm runs in $O(nl) + O(m\log m) + O(mr^2) = O(nl) + O(mr^2)$, depends on the value of $nl$ and $mr^2$.
 
-\subsubsection{Data Structure}
-For the basic case, we need to build a 2D array $Schedule$ in the function scheduling, and an array $T$ to be the list of time slots and we also need to build an array $P$ to denote the position of the courses. We also need a dictionary $room\_dict$, which is keyed with class id and use (time\_slot, room\_id) in the $Schedule$ as its value. 
+%\subsubsection{Data Structure}
+%For the basic case, we need to build a 2D array $Schedule$ in the function scheduling, and an array $T$ to be the list of time slots and we also need to build an array $P$ to denote the position of the courses. We also need a dictionary $room\_dict$, which is keyed with class id and use (time\_slot, room\_id) in the $Schedule$ as its value. 
 
-For the Haverford data, we also need to build two 2D arrays $Schedule$ and $overlapping\_schedule$ in the function scheduling, and four dictionaries, $room\_index\_dict$, which is keyed by the room index, $Position$, which is keyed by class id, $room\_dict$, which is also keyed by class id and use (time\_slot, room\_id) in the $Schedule$ as its value, and $over\_position$, which is keyed by class id.
+%For the Haverford data, we also need to build two 2D arrays $Schedule$ and $overlapping\_schedule$ in the function scheduling, and four dictionaries, $room\_index\_dict$, which is keyed by the room index, $Position$, which is keyed by class id, $room\_dict$, which is also keyed by class id and use (time\_slot, room\_id) in the $Schedule$ as its value, and $over\_position$, which is keyed by class id.
 
 \subsection{Proof of Correctness}
 To prove that this algorithm works, two parts need to be shown.
