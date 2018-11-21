@@ -320,15 +320,15 @@ Moreover, most low level intro classes will be held three times a week, while mo
 \subsection{Improvements}
 We didn't concern the courses that Haverford students took in Bryn Mawr, which means that we basically just concern about the classes that are held in Haverford. Also, we didn't take the labs for different classes into consideration.
 
-\newpage
+
 \section{Experimental Analysis}
-\subsection{Time Analysis}
-Based on our time analysis, the run time is roughly linear to $mtr^2$.
+%\subsection{Time Analysis}
+%Based on our time analysis, the run time is roughly linear to $mr^2 + nl$.
 
-\subsection{Solution Quality Analysis}
-For basic data, we can satisfy around 75\% to 100\% student preference. For Haverford data, we can satisfy around 77\% student preference.
+%\subsection{Solution Quality Analysis}
+For Haverford data, we can satisfy around 77\% student preference. This number is fixed; so in order to actually test our algorithm, we run the basic data and compare the difference of satisfaction rate and time needed.
 
-Table for the basic data:
+By generating different sets of basic data and apply our algorithm, we get the following table for the basic data (next page):
 \begin{table}[h]
 \begin{tabular}{|l|l|l|l|l|l|}
 \hline
@@ -338,14 +338,17 @@ Table for the basic data:
 5           & 80            & 20                & 200            & 0.94875    & 0.00285  \\ \hline
 20          & 80            & 5                 & 200            & 0.73625    & 0.003806 \\ \hline
 50          & 200           & 50                & 1000           & 0.97525    & 0.03513  \\ \hline
-500         & 200           & 50                & 1000           & 0.972      & 2.2292   \\ \hline
-50          & 200           & 500               & 1000           & 1          & 0.01889  \\ \hline
+500         & 200           & 50                & 1000           & 0.9575     & 2.2292   \\ \hline
+500         & 200           & 50                & 1000           & 0.89945    & 2.12678  \\ \hline
 100         & 4500          & 50                & 10000          & 0.972125   & 1.20007  \\ \hline
 100         & 4500          & 100               & 10000          & 0.985625   & 1.32053  \\ \hline
 \end{tabular}
 \end{table}
+\subsection{Optimization Analysis}
+Notice that the first 4 lines focus on the satisfaction rate analysis and the last 5 lines focus on the run time of the algorithm on different data sets.
 
-Table for the Haverford data:
+For the first 4 lines, the total empty slots, namely the product of number of rooms and the number of class times is always 100 and the number of student is fixed at 200. Changing other factors of the data can show the factors that influence the satisfaction rate. If we have same number of rooms and time slots, the increasing number of classes would decrease the satisfaction rate. If we fix the number of classes to be 80 and increase the rate of rooms/times, we are getting a decreased percent satisfaction. This is because less number of time slots will result in higher possibility of conflicts intuitively. On the contrary, if we increase the number of time slots, the probability of course conflict will reduce accordingly.
+\subsection{Run Time Analysis}
 
 
 % we are satisfying around \%80 student preference. However, we are not considering time slot overlapping. In other words, for two time slots one from 1 to 4 pm on Monday, and the other one from 1 to 2 pm on Monday, we are considering them as non overlapping slots. Thus the actual quality of Haverford data should be worse 80\%. Based on out time analysis, the runtime is roughly linear to $mtr$. For $mrt$ as small as a few hundreds, the program runs within 0.001 seconds. For $mrt$ around 30000, the program runs around 0.01 seconds. For $mrt$ as large as 2 millions, the program runs around 0.4 second. Roughly speaking, the runtime of the algorithm is proportional to $mtr$. 
