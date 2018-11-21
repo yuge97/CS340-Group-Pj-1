@@ -68,7 +68,7 @@ If such a time slot doesn't exist in all rooms that can fit that class, we move 
         \For{r $\in$ Rooms}{
             \For{each time t in Times}{
                 \If{t is empty}{
-                    Check all $S[t][i] (0 < i < r)$
+                    Check all $S[t][i] (0 < i < len(S[t]))$
                     
                     \If{there is a professor conflict}{
                         break
@@ -268,10 +268,9 @@ For the Haverford case, all process are the same and we create two schedule to f
 %it reaches where we call another function fillSchedule(). In the function fillSchedule(), all the loops will terminate since all input value are finite, so the function will terminate. The following while loop will terminate since there must be a way to schedule all classes. Thus all loops in this algorithm terminate, which means that the algorithm will terminate. \\
 
 \textit{Proof of validity:}
-
 Suppose that our schedule is not valid, which means that there exists two courses $c_1$ and $c_2$ that are assigned to the same time slot t and are taught by the same professor p. Also suppose $c_1$ is more popular than $c_2$. Then $c_1$ and $c_2$ are in different rooms $r_1$ and $r_2$. 
-Either there are 
-When $c_2$ is being checked, all other time slots all have professor conflicts with $c_1$.
+When $c_2$ is being checked, if no professor conflict is detected for time slot t, then $c_1$ is not assigned to any slots in S[t][i] ($0< i < len(S[t])$). In other words, $c_1$ is not at the same time slot as $c_2$. This is a contradiction since $c_1$ and $c_2$ are in the same time slot t.
+Therefore, there cannot be two courses $c_1$ and $c_2$ that are assigned to the same time slot and are taught by the same professor. The schedule provided by our algorithm is then valid.
 
 %For the basic data, we'll prove by contradiction. Suppose that our algorithm cannot give a valid result, which means that there must be some classes not been put into the class schedule. However, since when we multiplying the number of rooms and time slots, we find out that the number of the multiplication is much bigger than the number of classes or number of professors, it is impossible for some class not being able to be put into the class schedule, which is a contradiction.
 
