@@ -317,11 +317,11 @@ However, getting the information from the csv file can be problematic because th
 For example, class 9 represent classes with 3 different subjects. In this case, we only assign it the subject where it first appears. Another problem with this is that we are getting the rooms of certain subject from the csv file. This file, however, might only contain a portion of all possible rooms in that building. This fall will definitely reduce our performance score. But we choose to keep it this way because come up with all possible rooms by imagination could be an arduous work and would sacrifice a great amount of run time.
 
 \subsubsection{Overlapping time slots}
-We also consider the overlapping time slots that are given in the Haverford data.
+We also consider the overlapping time slots that are given in the Haverford data. Since some time slots have overlapping with each other, they cannot be considered as 2 completely distinct time slots since neither students or professors can attend classes at both time slots. As long as 2 time slots overlap, we put them into the same group and represent them as one time slot. Therefore, when processing the time data, we output 2 lists. One is the list of time where no overlapping occurs between any of the times. The other list contains the clusters of overlapping times.
 
-Low level classes and higher level classes in the same department can be put in the same time slot. 
+Given the 2 lists, when we are scheduling and looking for empty time slots, we only consider the times slots in the first list where no overlapping is happening. If we cannot fit all classes into these time slots, we move to the list of overlapping time slots. Thus, the classes that are assigned to the overlapping time slots are those with relatively low popularity and therefore cause minor conflicts.
 
-Moreover, most low level intro classes will be held three times a week, while most upper level classes will only be held twice or even once a week. When we are distributing the classes, we can also put that into consideration. Also, for foreign language classes which are held five times a week, we should try our best to put that into the schedule that has the least conflicts with other lower level classes. 
+It is obvious that overlapping time slots would cause a decrease in optimization rate. Therefore it would be better for college to avoid assigning classes in times that overlaps with each other. A reasonable change when scheduling classes is to make a time grid for all classes that no 2 time slots overlaps. This would make scheduling easier and make students remember their schedule better.
 
 \subsubsection{Lab sections}
 Moreover, lab sessions of a certain course should not be put into the same time slot with its lecture session, since for most classes that have labs, the instructor for the lecture and the instructor for the labs are the same.
