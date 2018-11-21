@@ -24,8 +24,7 @@
 We designed a greedy algorithm to solve the scheduling problem. To be brief, every time we assign a slot for a specific class, we try to minimize the its conflict. The restriction taken into consideration are professor conflicts, room restriction and student conflict.
 %We based our algorithm on greedy algorithm, which means that every time when we have to set a time slot and a room for a certain class, we pick the optimal classroom and time slot so that the same professor do not need to teach two or three classes at the same time, and by the mean time, the number of students who want to take this class are able to take that class is the more the better.
 
-From the implementation of our algorithm and that of our test method, we find out that the satisfaction rate lies between 75\% and 100\% on basic data, and 77.6\% on data from Haverford. 
-
+From the implementation of our algorithm and that of our test method, we find out that the satisfaction rate lies between 75\% and 100\% on basic data, and 74.5\% on data from Haverford.
 %By running code on our algorithm to test how our algorithm works on the basic data and Haverford data, we find out that only about 70\% percent of student preferences can be satisfied on the basic data. However, after running algorithm on Haverford data we find out that about 90\% of students preference can be satisfied. 
 
 %\newpage
@@ -340,14 +339,14 @@ Low level classes and higher level classes in the same department could be place
 \subsubsection{Foreign language classes}
 Foreign language classes and ESEM class in Bryn Mawr should be placed in the schedule that has the least conflicts with low level classes, since in the usual case only freshmen and sophomores will take the foreign language classes, and the classes that relate to their majors are usually those low level classes. Thus if the foreign language classes and ESEM class are put in the same schedule with the low level intro class of a certain major, the students could not take all of them.
 
-In our code, by implementing the first two constraints, we satisfy around 77\% student preferences.
+In our code, by implementing the first two constraints, we satisfy around 74.5\% student preferences.
 
 \section{Experimental Analysis}
 %\subsection{Time Analysis}
 %Based on our time analysis, the run time is roughly linear to $mr^2 + nl$.
 
 %\subsection{Solution Quality Analysis}
-For Haverford data, we can satisfy around 77\% student preference. This number is fixed; so in order to actually test our algorithm, we run the basic data and compare the difference of satisfaction rate and time needed.
+For Haverford data, we can satisfy around 74.5\% student preference. This number is fixed; so in order to actually test our algorithm, we run the basic data and compare the difference of satisfaction rate and time needed.
 
 
 By generating different sets of basic data and apply our algorithm, we get the following table for the basic data Table1:
