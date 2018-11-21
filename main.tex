@@ -310,7 +310,7 @@ We also concerned about the building that different courses are put in. For exam
 In order to take in concern of this constraint, we parse extra data from the csv file: the subject a class belongs to and also all the rooms in which a certain subject could be held. Store them into two dictionaries: one is with the class number as key and their subject as value, the other where the subject is the key and the list of rooms they are allowed to be held in as value. Therefore, when we schedule a certain class, we find the department it belongs to and only schedule classes in rooms that belongs to that department.
 
 However, getting all information from the csv file can be problematic. For example, a single class number might represent different classes, and consequently, different departments. Such as class 9 represent classes with 3 different subjects. In this case, we only assign it the subject where it first appears. Another problem with this is that we are getting the rooms of certain subject from the csv file. This file, however, might only contain a portion of all possible rooms in that building. This fall will definitely reduce our performance score. But we choose to keep it this way because come up with all possible rooms by imagination could be an arduous work and would sacrifice a great amount of run time.
-\subsubsection{}
+\subsubsection{Overlapping time slots}
 We also consider the overlapping time slots that are given in the Haverford data.
 
 Low level classes and higher level classes in the same department can be put in the same time slot. 
