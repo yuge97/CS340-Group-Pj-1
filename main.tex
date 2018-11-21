@@ -281,7 +281,9 @@ Therefore, there cannot be two courses $c_1$ and $c_2$ that are assigned to the 
 \subsection{Discussion}
 The scheduling problem is an optimization problem, so we choose greedy algorithm, given our limited knowledge on how to solve optimization problems. This problem is different from the optimization problem we encountered in class and is more difficult, because it has a lot of constraints that we need to take into consideration. Additionally, some constraints are more significant then others, and thus we have to determine what constraints to prioritize, and we will also need to decide whether we should let conflicts happen when they are not avoidable.
 
-We are inspired by the earliest-finish time algorithm. Earliest-finish time algorithm picks the earliest finish task so that the time interval left for other tasks is maximized. Similarly, in our algorithm, we are prioritizing more popular classes by assigning them larger rooms so that we can maximize the number of students that are satisfied.
+Moreover, we are inspired by the earliest-finish time algorithm. Earliest-finish time algorithm picks the earliest finish task so that the time interval left for other tasks is maximized. Similarly, in our algorithm, we are prioritizing more popular classes by assigning them larger rooms so that we can maximize the number of students that are satisfied. 
+
+These are the main reasons we choose greedy to approach this problem.
 
 %We decided to choose the greedy algorithm because by the first check point time for this project, the only algorithm we learned was greedy algorithm, and as the purpose for this project was finding the most optimal way of scheduling all classes, we thought that greedy algorithm was actually one of the best choices for this problem. Then we came up with the problem that what conditions should we base our algorithm on.
 
@@ -289,13 +291,13 @@ We are inspired by the earliest-finish time algorithm. Earliest-finish time algo
 
 %In the mean time, we are taking the classroom and professor's availability into consideration. We try to avoid the situation where 2 classes in the same time slot are taught by the same professor. Also, the class size won't exceed the capacity of the classrooms. If there are an unavoidable conflict, we will sacrifice the smallest number of students that are involved in this conflict.
 
-We then found out that only about 70\% students preference could be satisfied. Then for the real Haverford data, the popularity of a certain class is actually determined not only by its topic, but also by its class level or difficulty, and since it is a real data, we should actually make all students to take the classes they wanted to take. 
+%We then found out that only about 70\% students preference could be satisfied. Then for the real Haverford data, the popularity of a certain class is actually determined not only by its topic, but also by its class level or difficulty, and since it is a real data, we should actually make all students to take the classes they wanted to take. 
 
-We found out that our algorithm can only let 70\% of students preference be satisfied, and we need to change our algorithm a little bit. Also, we did not distinguish class times between only need to take that class in a particular day in a week and need to take the same class twice or three times in a week. 
+%We found out that our algorithm can only let 70\% of students preference be satisfied, and we need to change our algorithm a little bit. Also, we did not distinguish class times between only need to take that class in a particular day in a week and need to take the same class twice or three times in a week. 
 
-Then the first thing we did is to combine classes that students should take twice or three times a week. We added the keys in the dictionary, and wrote new function to deal with time slots that have overlaps (e.g classes on Monday and Wednesday morning 10:30 to 11:30 and classes on Monday and Wednesday morning 10:00 to 11:30 have overlaps). Then we basically assign students for classes that have no overlapping, and then assign students for classes that have overlaps. 
+%Then the first thing we did is to combine classes that students should take twice or three times a week. We added the keys in the dictionary, and wrote new function to deal with time slots that have overlaps (e.g classes on Monday and Wednesday morning 10:30 to 11:30 and classes on Monday and Wednesday morning 10:00 to 11:30 have overlaps). Then we basically assign students for classes that have no overlapping, and then assign students for classes that have overlaps. 
 
-We then decided to add the building that different classes should be held in into consideration. For example, STEM classes will only be held in KINSK Building in Haverford and in Park Building in Bryn Mawr. So we wrote new functions to get the information of which classes are held in which building, and which majors have what classes.
+%We then decided to add the building that different classes should be held in into consideration. For example, STEM classes will only be held in KINSK Building in Haverford and in Park Building in Bryn Mawr. So we wrote new functions to get the information of which classes are held in which building, and which majors have what classes.
 %% Need to change
 
 \subsection{Extra Constraints}
