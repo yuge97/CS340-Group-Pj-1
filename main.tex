@@ -377,13 +377,14 @@ Notice that the first 4 lines focus on the satisfaction rate analysis and the la
 
 For the first 4 lines, the total empty slots, namely the product of number of rooms and the number of class times is always 100 and the number of student is fixed at 200. Changing other factors of the data can show the factors that influence the satisfaction rate. If we have same number of rooms and time slots, the increasing number of classes would decrease the satisfaction rate. If we fix the number of classes to be 80 and increase the rate of rooms/times, we are getting a decreased percent satisfaction. This is because less number of time slots will result in higher possibility of conflicts intuitively. On the contrary, if we increase the number of time slots, the probability of course conflict will reduce accordingly.
 \subsection{Run Time Analysis}
-We claim that the algorithm is roughly linear to $mr^2 + nl$. Take the boxed fifth row as base case and compare the result of other row to it.
+We claim that the algorithm is roughly linear to $mr^2 + nl$. Take the boxed fifth row as reference and compare it with all rows below.
+%the result of other rows to it.
 
-If we only increase the number of classes by multiplying a factor of 2 each time, we can get rows 6 to 8. Notice that when the number of class are increasing from 200 to 1600, the time of those trials are also increasing by the same rate (around 3) at each increment. Therefore the run time is indeed linearly related to the number of classes.
+If we only increase the number of classes by multiplying a factor of 2 each time, we can get rows 6 to 8. Notice that when the number of class is increasing from 200 to 1600, the run time of those trials are also increasing by the same rate (around 3) at each increment. Therefore the run time is indeed linearly related to the number of classes.
 
-If we only increase the number of rooms by multiplying 2 each time, we get rows 9 to 11. Comparing the run time to the base case, we can see that the run time is roughly linear to the rate of change of number of rooms squared.
+If we only increase the number of rooms by multiplying 2 each time, we get rows 9 to 11. Comparing the run time with the reference, we can see that the run time is roughly linear to the rate of change of number of rooms squared.
 
-If we only increase the number of students, we get rows 12 to 14. Comparing the run time to the base case, the time is increasing by a constant factor of around 1.2 each time. Therefore the run time is indeed linear to the number of students.
+If we only increase the number of students, we get rows 12 to 14. Comparing the run time with the reference, the time is increasing by a constant factor of around 1.2 each time. Therefore the run time is indeed linear to the number of students.
 
 In conclusion, we have verified that the run time of our algorithm is indeed linear to $mr^2 + nl$.
 
