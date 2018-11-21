@@ -354,11 +354,19 @@ By generating different sets of basic data and apply our algorithm, we get the f
 \end{tabular}
 \end{table}
 \subsection{Optimization Analysis}
-Notice that the first 4 lines focus on the satisfaction rate analysis and the last 5 lines focus on the run time of the algorithm on larger data sizes.
+Notice that the first 4 lines focus on the satisfaction rate analysis and the last several lines focus on the run time of the algorithm on larger data sizes.
 
 For the first 4 lines, the total empty slots, namely the product of number of rooms and the number of class times is always 100 and the number of student is fixed at 200. Changing other factors of the data can show the factors that influence the satisfaction rate. If we have same number of rooms and time slots, the increasing number of classes would decrease the satisfaction rate. If we fix the number of classes to be 80 and increase the rate of rooms/times, we are getting a decreased percent satisfaction. This is because less number of time slots will result in higher possibility of conflicts intuitively. On the contrary, if we increase the number of time slots, the probability of course conflict will reduce accordingly.
 \subsection{Run Time Analysis}
-We claim that the algorithm is dominated by the term $r^2$, which is number of rooms squared. Therefore the run time should be closely related to the number of rooms. It is indeed the case if we look at the table above. Notice that when we move from row 5 to row 6, the number of rooms increased by 10 times
+We claim that the algorithm is roughly linear to $mr^2 + nl$. Take the boxed fifth row as base case and compare the result of other row to it.
+
+If we only increase the number of classes by multiplying a factor of 2 each time, we can get rows 6 to 8. Notice that when the number of class are increasing from 200 to 1600, the time of those trials are also increasing by the same rate (around 3) at each increment. Therefore the run time is indeed linearly related to the number of classes.
+
+If we only increase the number of rooms by multiplying 2 each time, we get rows 9 to 11. Comparing the run time to the base case, we can see that the run time is roughly linear to the rate of change of number of rooms squared.
+
+If we only increase the number of students, we get rows 12 to 14. Comparing the run time to the base case, the time is increasing by a constant factor of around 1.2 each time. Therefore the run time is indeed linear to the number of students.
+
+In conclusion, we have verified that the run time of our algorithm is indeed linear to $mr^2 + nl$.
 
 % we are satisfying around \%80 student preference. However, we are not considering time slot overlapping. In other words, for two time slots one from 1 to 4 pm on Monday, and the other one from 1 to 2 pm on Monday, we are considering them as non overlapping slots. Thus the actual quality of Haverford data should be worse 80\%. Based on out time analysis, the runtime is roughly linear to $mtr$. For $mrt$ as small as a few hundreds, the program runs within 0.001 seconds. For $mrt$ around 30000, the program runs around 0.01 seconds. For $mrt$ as large as 2 millions, the program runs around 0.4 second. Roughly speaking, the runtime of the algorithm is proportional to $mtr$. 
 
