@@ -279,7 +279,9 @@ Therefore, there cannot be two courses $c_1$ and $c_2$ that are assigned to the 
 %Thus our algorithm will give a valid scheduling of all classes.
 
 \subsection{Discussion}
-The scheduling problem is an optimization problem, so we choose greedy algorithm, given our limited knowledge on how to solve optimization problems. This problem is different from the optimization problem we encountered in class, because it has a lot of constraints that we need to take into consideration.
+The scheduling problem is an optimization problem, so we choose greedy algorithm, given our limited knowledge on how to solve optimization problems. This problem is different from the optimization problem we encountered in class and is more difficult, because it has a lot of constraints that we need to take into consideration. Additionally, some constraints are more significant then others, and thus we have to determine what constraints to prioritize, and we will also need to decide whether we should let conflicts happen when they are not avoidable.
+
+We are inspired by the earliest-finish time algorithm. Earliest-finish time algorithm picks the earliest finish task so that the time interval left for other tasks is maximized. Similarly, in our algorithm, we are prioritizing more popular classes by assigning them larger rooms so that we can maximize the number of students that are satisfied.
 
 %We decided to choose the greedy algorithm because by the first check point time for this project, the only algorithm we learned was greedy algorithm, and as the purpose for this project was finding the most optimal way of scheduling all classes, we thought that greedy algorithm was actually one of the best choices for this problem. Then we came up with the problem that what conditions should we base our algorithm on.
 
